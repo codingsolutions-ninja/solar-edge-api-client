@@ -19,16 +19,14 @@ repositories {
 dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.16'
     annotationProcessor 'org.projectlombok:lombok:1.18.16'
-
-    // Use JUnit Jupiter API for testing.
+    compileOnly 'com.fasterxml.jackson.core:jackson-databind:2.4.4'
+    runtimeOnly 'com.fasterxml.jackson.core:jackson-databind:2.4.4'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
-
-
+    testCompile "org.mockito:mockito-core:2.+"
     testCompileOnly 'org.projectlombok:lombok:1.18.16'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
-
-    // Use JUnit Jupiter Engine for testing.
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+
 }
 
 tasks.named('test') {
