@@ -1,8 +1,10 @@
 package ninja.codingsolutions.solaredgeapiclient;
 
 import ninja.codingsolutions.solaredgeapiclient.interfaces.SolarEdgeApiClient;
+import ninja.codingsolutions.solaredgeapiclient.models.OverviewResponse;
 import ninja.codingsolutions.solaredgeapiclient.models.SiteDetailsResponse;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -16,6 +18,29 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 class SolarEdgeApiClientImplTests {
+
+    private static final String standardOverviewJsonResponse = "{\n" +
+            "    \"overview\": {\n" +
+            "        \"lastUpdateTime\": \"2021-02-09 21:25:49\",\n" +
+            "        \"lifeTimeData\": {\n" +
+            "            \"energy\": 1.8905078E7,\n" +
+            "            \"revenue\": 1306.1078\n" +
+            "        },\n" +
+            "        \"lastYearData\": {\n" +
+            "            \"energy\": 1340462.0\n" +
+            "        },\n" +
+            "        \"lastMonthData\": {\n" +
+            "            \"energy\": 345071.0\n" +
+            "        },\n" +
+            "        \"lastDayData\": {\n" +
+            "            \"energy\": 33054.0\n" +
+            "        },\n" +
+            "        \"currentPower\": {\n" +
+            "            \"power\": 0.0\n" +
+            "        },\n" +
+            "        \"measuredBy\": \"INVERTER\"\n" +
+            "    }\n" +
+            "}";
 
     private static final String standardDetailJsonResponse = "{\n" +
             "    \"details\": {\n" +
@@ -59,6 +84,52 @@ class SolarEdgeApiClientImplTests {
             "    }\n" +
             "}";
 
+    private HttpClient mockClient;
+    private HttpResponse<Object> mockResponse;
+    private CompletableFuture<HttpResponse<Object>> mockFuture;
+    private SolarEdgeApiClient client;
+
+    @SuppressWarnings("unchecked")
+    @BeforeEach
+    void setup(){
+        mockClient = Mockito.mock(HttpClient.class);
+        mockResponse = Mockito.mock(HttpResponse.class);
+        mockFuture = CompletableFuture.completedFuture(mockResponse);
+        client = SolarEdgeClientFactory
+                .builder()
+                .apiKey("TEST")
+                .httpClient(mockClient)
+                .apiUrl("http://localhost/test")
+                .build().buildClient();
+
+        Mockito.when(mockClient.sendAsync(Mockito.any(), Mockito.any()))
+                .thenReturn(mockFuture);
+    }
+
+    void returnJson(String jsonStr) {
+        Mockito.when(mockResponse.body()).thenReturn(jsonStr);
+    }
+
+    @Test
+    void canGetSiteOverview() throws ExecutionException, InterruptedException {
+        returnJson(standardOverviewJsonResponse);
+        Future<OverviewResponse> response = client.getOverviewResponse(1111);
+        OverviewResponse resp = response.get();
+        Assertions.assertNotNull(resp);
+        Assertions.assertNotNull(resp.getOverview());
+        Assertions.assertNotNull(resp.getOverview().getLifeTimeData());
+        Assertions.assertNotNull(resp.getOverview().getLastDayData());
+        Assertions.assertNotNull(resp.getOverview().getLastMonthData());
+        Assertions.assertNotNull(resp.getOverview().getLastYearData());
+        Assertions.assertNotNull(resp.getOverview().getCurrentPower());
+        Assertions.assertEquals(1.8905078E7, resp.getOverview().getLifeTimeData().getEnergy());
+        Assertions.assertEquals(1306.1078, resp.getOverview().getLifeTimeData().getRevenue());
+        Assertions.assertEquals(1340462.0, resp.getOverview().getLastYearData().getEnergy());
+        Assertions.assertEquals(345071.0, resp.getOverview().getLastMonthData().getEnergy());
+        Assertions.assertEquals(33054.0, resp.getOverview().getLastDayData().getEnergy());
+        Assertions.assertEquals(0.0, resp.getOverview().getCurrentPower().getPower());
+        Assertions.assertEquals("INVERTER", resp.getOverview().getMeasuredBy());
+    }
 
     /**
      * Basic test for fetching site details and parsing from json to usable POJO
@@ -67,28 +138,9 @@ class SolarEdgeApiClientImplTests {
      */
     @Test
     void canGetSiteDetails() throws ExecutionException, InterruptedException, ParseException {
-
-
-        HttpClient mockClient = Mockito.mock(HttpClient.class);
-        HttpResponse<Object> mockResponse = Mockito.mock(HttpResponse.class);
-        CompletableFuture<HttpResponse<Object>> future = CompletableFuture.completedFuture(mockResponse);
-
-        SolarEdgeApiClient client = SolarEdgeClientFactory
-                .builder()
-                .apiKey("TEST")
-                .httpClient(mockClient)
-                .apiUrl("http://localhost/test")
-                .build().buildClient();
-
-
-        Mockito.when(mockClient.sendAsync(Mockito.any(), Mockito.any()))
-                .thenReturn(future);
-        Mockito.when(mockResponse.body()).thenReturn(standardDetailJsonResponse);
-
+        returnJson(standardDetailJsonResponse);
         Future<SiteDetailsResponse> response = client.getSiteDetails(1111);
-
         SiteDetailsResponse resp = response.get();
-
         Assertions.assertNotNull(resp);
         Assertions.assertNotNull(resp.getDetails());
         Assertions.assertEquals(1, resp.getDetails().getId());
