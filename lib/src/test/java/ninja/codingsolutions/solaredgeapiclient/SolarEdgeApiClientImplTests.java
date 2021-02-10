@@ -8,16 +8,56 @@ import org.mockito.Mockito;
 
 import java.net.http.HttpClient;
 import java.net.http.HttpResponse;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.TimeZone;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 class SolarEdgeApiClientImplTests {
+
+    private static final String standardDetailJsonResponse = "{\n" +
+            "    \"details\": {\n" +
+            "        \"id\": 1,\n" +
+            "        \"name\": \"John Smith\",\n" +
+            "        \"accountId\": 5,\n" +
+            "        \"status\": \"Active\",\n" +
+            "        \"peakPower\": 8.68,\n" +
+            "        \"lastUpdateTime\": \"2021-02-09\",\n" +
+            "        \"currency\": \"USD\",\n" +
+            "        \"installationDate\": \"2019-07-31\",\n" +
+            "        \"ptoDate\": null,\n" +
+            "        \"notes\": \"\",\n" +
+            "        \"type\": \"Optimizers & Inverters\",\n" +
+            "        \"location\": {\n" +
+            "            \"country\": \"United States\",\n" +
+            "            \"state\": \"Test\",\n" +
+            "            \"city\": \"Test\",\n" +
+            "            \"address\": \"Test\",\n" +
+            "            \"address2\": \"\",\n" +
+            "            \"zip\": \"11111\",\n" +
+            "            \"timeZone\": \"America/Chicago\",\n" +
+            "            \"countryCode\": \"US\",\n" +
+            "            \"stateCode\": \"TT\"\n" +
+            "        },\n" +
+            "        \"primaryModule\": {\n" +
+            "            \"manufacturerName\": \"Mission Solar\",\n" +
+            "            \"modelName\": \"MSE310SQ8T\",\n" +
+            "            \"maximumPower\": 310.0,\n" +
+            "            \"temperatureCoef\": -0.43\n" +
+            "        },\n" +
+            "        \"uris\": {\n" +
+            "            \"SITE_IMAGE\": \"/site/1/siteImage/test.JPG\",\n" +
+            "            \"DATA_PERIOD\": \"/site/1/dataPeriod\",\n" +
+            "            \"DETAILS\": \"/site/1/details\",\n" +
+            "            \"OVERVIEW\": \"/site/1/overview\"\n" +
+            "        },\n" +
+            "        \"publicSettings\": {\n" +
+            "            \"isPublic\": false\n" +
+            "        }\n" +
+            "    }\n" +
+            "}";
 
 
     /**
@@ -27,47 +67,7 @@ class SolarEdgeApiClientImplTests {
      */
     @Test
     void canGetSiteDetails() throws ExecutionException, InterruptedException, ParseException {
-        String testResponseJson = "{\n" +
-                "    \"details\": {\n" +
-                "        \"id\": 1,\n" +
-                "        \"name\": \"John Smith\",\n" +
-                "        \"accountId\": 5,\n" +
-                "        \"status\": \"Active\",\n" +
-                "        \"peakPower\": 8.68,\n" +
-                "        \"lastUpdateTime\": \"2021-02-09\",\n" +
-                "        \"currency\": \"USD\",\n" +
-                "        \"installationDate\": \"2019-07-31\",\n" +
-                "        \"ptoDate\": null,\n" +
-                "        \"notes\": \"\",\n" +
-                "        \"type\": \"Optimizers & Inverters\",\n" +
-                "        \"location\": {\n" +
-                "            \"country\": \"United States\",\n" +
-                "            \"state\": \"Test\",\n" +
-                "            \"city\": \"Test\",\n" +
-                "            \"address\": \"Test\",\n" +
-                "            \"address2\": \"\",\n" +
-                "            \"zip\": \"11111\",\n" +
-                "            \"timeZone\": \"America/Chicago\",\n" +
-                "            \"countryCode\": \"US\",\n" +
-                "            \"stateCode\": \"TT\"\n" +
-                "        },\n" +
-                "        \"primaryModule\": {\n" +
-                "            \"manufacturerName\": \"Mission Solar\",\n" +
-                "            \"modelName\": \"MSE310SQ8T\",\n" +
-                "            \"maximumPower\": 310.0,\n" +
-                "            \"temperatureCoef\": -0.43\n" +
-                "        },\n" +
-                "        \"uris\": {\n" +
-                "            \"SITE_IMAGE\": \"/site/1/siteImage/test.JPG\",\n" +
-                "            \"DATA_PERIOD\": \"/site/1/dataPeriod\",\n" +
-                "            \"DETAILS\": \"/site/1/details\",\n" +
-                "            \"OVERVIEW\": \"/site/1/overview\"\n" +
-                "        },\n" +
-                "        \"publicSettings\": {\n" +
-                "            \"isPublic\": false\n" +
-                "        }\n" +
-                "    }\n" +
-                "}";
+
 
         HttpClient mockClient = Mockito.mock(HttpClient.class);
         HttpResponse<Object> mockResponse = Mockito.mock(HttpResponse.class);
@@ -83,7 +83,7 @@ class SolarEdgeApiClientImplTests {
 
         Mockito.when(mockClient.sendAsync(Mockito.any(), Mockito.any()))
                 .thenReturn(future);
-        Mockito.when(mockResponse.body()).thenReturn(testResponseJson);
+        Mockito.when(mockResponse.body()).thenReturn(standardDetailJsonResponse);
 
         Future<SiteDetailsResponse> response = client.getSiteDetails(1111);
 
