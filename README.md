@@ -1,6 +1,6 @@
 # solar-edge-api-client
 
-![Codacy grade](https://img.shields.io/codacy/grade/1626e3d2cbb14a1dad742e43b343dbc5?style=for-the-badge) ![Codecov](https://img.shields.io/codecov/c/gh/akboyd88/solar-edge-api-client?style=for-the-badge) ![GitHub](https://img.shields.io/github/license/akboyd88/solar-edge-api-client?style=for-the-badge)
+![Codacy grade](https://img.shields.io/codacy/grade/1626e3d2cbb14a1dad742e43b343dbc5?style=for-the-badge) ![Codecov](https://img.shields.io/codecov/c/gh/akboyd88/solar-edge-api-client?style=for-the-badge) ![GitHub](https://img.shields.io/github/license/akboyd88/solar-edge-api-client?style=for-the-badge) ![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/akboyd88/solar-edge-api-client?style=for-the-badge)
 
 ## Usage 
 
