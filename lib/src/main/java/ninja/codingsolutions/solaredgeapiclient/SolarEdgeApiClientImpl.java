@@ -12,7 +12,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
 
 @AllArgsConstructor
 public class SolarEdgeApiClientImpl implements SolarEdgeApiClient {
@@ -37,7 +36,7 @@ public class SolarEdgeApiClientImpl implements SolarEdgeApiClient {
                 .thenApplyAsync(HttpResponse::body);
     }
 
-    private Future<?> getObjectFromResponse(String url, HttpClient client, Class<?> cl){
+    private CompletableFuture<?> getObjectFromResponse(String url, HttpClient client, Class<?> cl){
         var ref = new Object() {
             CompletableFuture<?> cResp = null;
         };
@@ -54,9 +53,9 @@ public class SolarEdgeApiClientImpl implements SolarEdgeApiClient {
     }
     @SuppressWarnings("unchecked")
     @Override
-    public Future<SiteDetailsResponse> getSiteDetails(int siteId) {
+    public CompletableFuture<SiteDetailsResponse> getSiteDetails(int siteId) {
         String url = String.format("%s/site/%s/details?api_key=%s", endPoint, siteId, apiKey);
-        return (Future<SiteDetailsResponse>)getObjectFromResponse(url, client, SiteDetailsResponse.class);
+        return (CompletableFuture<SiteDetailsResponse>)getObjectFromResponse(url, client, SiteDetailsResponse.class);
     }
 
     /**
@@ -67,8 +66,8 @@ public class SolarEdgeApiClientImpl implements SolarEdgeApiClient {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public Future<OverviewResponse> getOverviewResponse(int siteId) {
+    public CompletableFuture<OverviewResponse> getOverviewResponse(int siteId) {
         String url = String.format("%s/site/%s/overview?api_key=%s", endPoint, siteId, apiKey);
-        return (Future<OverviewResponse>)getObjectFromResponse(url, client, OverviewResponse.class);
+        return (CompletableFuture<OverviewResponse>)getObjectFromResponse(url, client, OverviewResponse.class);
     }
 }
