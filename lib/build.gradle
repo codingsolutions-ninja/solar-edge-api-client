@@ -69,7 +69,12 @@ signing {
   }
 }
 
-
+if (!project.hasProperty("ossrhUsername")) {
+  ext.ossrhUsername = "OSSRH-USERNAME-SHOULD-BE-DEFINED-EXTERNALLY"
+}
+if (!project.hasProperty("ossrhPassword")) {
+  ext.ossrhPassword = "OSSRH-PASSWORD-SHOULD-BE-DEFINED-EXTERNALLY"
+}
 uploadArchives {
   repositories {
     mavenDeployer {
