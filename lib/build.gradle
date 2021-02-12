@@ -10,7 +10,14 @@ plugins {
     // Apply the java-library plugin for API and implementation separation.
     id 'java-library'
     id 'jacoco'
+    id 'maven'
+    id 'signing'
+    id 'com.palantir.git-version' version '0.12.3'
 }
+
+group = "ninja.codingsolutions"
+archivesBaseName = "solar-edge-api-client"
+version gitVersion()
 
 repositories {
     // Use JCenter for resolving dependencies.
@@ -29,7 +36,15 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 
 }
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
 
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
 tasks.named('test') {
     // Use junit platform for unit tests.
     useJUnitPlatform()
@@ -44,4 +59,56 @@ jacocoTestReport {
     reports {
         xml.enabled true
     }
+}
+artifacts {
+    archives javadocJar, sourcesJar
+}
+signing {
+    sign configurations.archives
+}
+
+
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+      repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+        authentication(userName: ossrhUsername, password: ossrhPassword)
+      }
+
+      snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+        authentication(userName: ossrhUsername, password: ossrhPassword)
+      }
+
+      pom.project {
+        name 'solar-edge-api-client'
+        packaging 'jar'
+        // optionally artifactId can be defined here 
+        description 'A simple API that abstracts fetching data from the solar edge api and getting back a POJO'
+        url 'https://github.com/akboyd88/solar-edge-api-client'
+
+        scm {
+          connection 'scm:git:https://github.com/akboyd88/solar-edge-api-client'
+          developerConnection 'scm:git:https://github.com/akboyd88/solar-edge-api-client'
+          url 'https://github.com/akboyd88/solar-edge-api-client'
+        }
+
+        licenses {
+          license {
+            name 'The MIT License (MIT)'
+            url 'https://mit-license.org/'
+          }
+        }
+
+        developers {
+          developer {
+            id 'akboyd88'
+            name 'Andrew Boyd'
+            email 'ninjacodingsolutions@protonmail.com'
+          }
+        }
+      }
+    }
+  }
 }
