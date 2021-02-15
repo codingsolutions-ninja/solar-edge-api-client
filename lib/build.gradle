@@ -11,8 +11,6 @@ plugins {
     id 'java-library'
     id 'jacoco'
     id 'maven'
-    // for git hub packages
-    id 'maven-publish'
     id 'signing'
     id 'com.palantir.git-version' version '0.12.3'
 }
@@ -66,41 +64,31 @@ artifacts {
     archives javadocJar, sourcesJar
 }
 signing {
-  if (project.hasProperty('signing.keyId') && project.hasProperty('signing.password') && project.hasProperty('signing.secretKeyRingFile')) {
-    sign configurations.archives
-  }
+    def signingKeyId = findProperty("signingKeyId")
+    def signingKey = findProperty("signingKey")
+    def signingPassword = findProperty("signingPassword")
+    if(signingKeyId != null && signingKey != null && signingPassword != null) {
+        useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
+        sign configurations.archives
+    }
+}
+
+def getEnvironmentVarIfDef(varName, defValue) {
+    def varValue = System.getenv(varName)
+    if (varValue != null)
+        return varValue
+    else
+        return defValue
 }
 
 //allow building witout sonatype oss info
 if (!project.hasProperty("ossrhUsername")) {
-  ext.ossrhUsername = "OSSRH-USERNAME-SHOULD-BE-DEFINED-EXTERNALLY"
+  ext.ossrhUsername = getEnvironmentVarIfDef("OSSRH_USERNAME", "OSSRH-USERNAME-SHOULD-BE-DEFINED-EXTERNALLY")
 }
 
 //allow building without sonatype oss info
 if (!project.hasProperty("ossrhPassword")) {
-  ext.ossrhPassword = "OSSRH-PASSWORD-SHOULD-BE-DEFINED-EXTERNALLY"
-}
-
-//github package
-publishing {
-  repositories {
-        maven {
-            name = "Github"
-            url = uri("https://maven.pkg.github.com/akboyd88/solar-edge-api-client.git")
-            credentials {
-                username = System.getenv("USERNAME")
-                password = System.getenv("TOKEN")
-            }
-        }
-    }
-    publications {
-        register("jar", MavenPublication) {
-            from(components["java"])
-            pom {
-                url.set("https://github.com/akboyd88/solar-edge-api-client.git")
-            }
-        }
-    }
+  ext.ossrhPassword = getEnvironmentVarIfDef("OSSRH_PASSWORD", "OSSRH-PASSWORD-SHOULD-BE-DEFINED-EXTERNALLY")
 }
 
 //maven central
