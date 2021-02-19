@@ -76,9 +76,9 @@ artifacts {
     archives javadocJar, sourcesJar
 }
 signing {
-    def signingKeyId = findProperty("signingKeyId")
-    def signingKey = findProperty("signingKey")
-    def signingPassword = findProperty("signingPassword")
+    def signingKeyId = getProperty("signingKeyId")
+    def signingKey = getProperty("signingKey")
+    def signingPassword = getProperty("signingPassword")
     useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
     sign configurations.archives
 }
