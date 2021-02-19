@@ -4,6 +4,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
 
+/**
+ * Primary module (inverter) metrics
+ */
 @Builder
 @Data
 @Jacksonized

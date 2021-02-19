@@ -5,6 +5,10 @@ import ninja.codingsolutions.solaredgeapiclient.models.SiteDetailsResponse;
 
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Interface defining the interactions available for the client
+ * to enact
+ */
 public interface SolarEdgeApiClient {
     /**
      * Fetch the site details from the API

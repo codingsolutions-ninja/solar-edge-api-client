@@ -48,6 +48,7 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.1'
 
 }
+
 task javadocJar(type: Jar) {
     classifier = 'javadoc'
     from javadoc
@@ -79,13 +80,12 @@ artifacts {
 
 
 signing {
-    def signingKeyId = findProperty("signingKeyId")
     def signingKey = findProperty("signingKey")
     def signingPassword = findProperty("signingPassword")
-    if(signingKeyId == null || signingKey == null || signingPassword == null)
+    if(signingKey == null || signingPassword == null)
         return
     project.logger.lifecycle('Signing Archives')
-    useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
+    useInMemoryPgpKeys(signingKey, signingPassword)
     sign configurations.archives
 }
 

@@ -4,6 +4,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
 
+/**
+ * Location of site described with
+ * country, state, city, and address
+ */
 @Builder
 @Data
 @Jacksonized

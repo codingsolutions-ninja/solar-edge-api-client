@@ -5,6 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
 
+/**
+ * Link information to supplemental information
+ * such as site image, data period, details, and overview
+ */
 @Builder
 @Data
 @Jacksonized
