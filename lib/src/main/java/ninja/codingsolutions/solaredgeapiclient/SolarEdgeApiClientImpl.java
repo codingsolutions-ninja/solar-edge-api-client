@@ -13,6 +13,10 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Implementation of the solar edge api client interface.
+ * Requires a provided HttpClient, endPoint URI and api key value
+ */
 @AllArgsConstructor
 public class SolarEdgeApiClientImpl implements SolarEdgeApiClient {
     private final HttpClient client;

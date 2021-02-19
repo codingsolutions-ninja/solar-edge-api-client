@@ -4,6 +4,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
 
+/**
+ * Overview response from API
+ */
 @Data
 @Jacksonized
 @Builder

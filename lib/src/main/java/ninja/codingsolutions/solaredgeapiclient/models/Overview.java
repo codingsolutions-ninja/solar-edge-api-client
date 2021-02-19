@@ -7,6 +7,9 @@ import lombok.extern.jackson.Jacksonized;
 
 import java.util.Date;
 
+/**
+ * Site overview information
+ */
 @Data
 @Builder
 @Jacksonized

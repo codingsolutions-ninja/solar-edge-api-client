@@ -4,9 +4,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
 
+/**
+ * Power data in kWh
+ */
 @Data
 @Builder
 @Jacksonized
 public class PowerData {
-    private int power;
+    private double power;
 }
