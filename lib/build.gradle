@@ -76,11 +76,13 @@ artifacts {
     archives javadocJar, sourcesJar
 }
 signing {
-    def signingKeyId = getProperty("signingKeyId")
-    def signingKey = getProperty("signingKey")
-    def signingPassword = getProperty("signingPassword")
-    useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
-    sign configurations.archives
+    def signingKeyId = findProperty("signingKeyId")
+    def signingKey = findProperty("signingKey")
+    def signingPassword = findProperty("signingPassword")
+    if(signingKeyId != null && signingKey != null && signingPassword != null) {
+        useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
+        sign configurations.archives
+    }
 }
 
 def getEnvironmentVarIfDef(varName, defValue) {
