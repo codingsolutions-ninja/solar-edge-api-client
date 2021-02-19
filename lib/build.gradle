@@ -75,14 +75,18 @@ jacocoTestReport {
 artifacts {
     archives javadocJar, sourcesJar
 }
+
+
+
 signing {
     def signingKeyId = findProperty("signingKeyId")
     def signingKey = findProperty("signingKey")
     def signingPassword = findProperty("signingPassword")
-    if(signingKeyId != null && signingKey != null && signingPassword != null) {
-        useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
-        sign configurations.archives
-    }
+    if(signingKeyId == null || signingKey == null || signingPassword == null)
+        return
+    project.logger.lifecycle('Signing Archives')
+    useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
+    sign configurations.archives
 }
 
 def getEnvironmentVarIfDef(varName, defValue) {
