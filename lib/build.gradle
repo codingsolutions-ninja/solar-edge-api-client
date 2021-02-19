@@ -13,11 +13,23 @@ plugins {
     id 'maven'
     id 'signing'
     id 'com.palantir.git-version' version '0.12.3'
+
 }
 
 group = "ninja.codingsolutions"
 archivesBaseName = "solar-edge-api-client"
 version gitVersion()
+
+ext {
+    repoPath = System.getenv('GH_REPO_PATH')
+    ghToken = System.getenv('GH_TOKEN')
+    authorName = System.getenv('AUTHOR_NAME')
+    authorId = System.getenv('AUTHOR_ID')
+    authorEmail = System.getenv('AUTHOR_EMAIL')
+    projectName = System.getenv('PROJECT_NAME')
+    projectUrl = System.getenv('PROJECT_URL')
+    scmUrl = System.getenv('SCM_URL')
+}
 
 repositories {
     // Use JCenter for resolving dependencies.
@@ -63,14 +75,18 @@ jacocoTestReport {
 artifacts {
     archives javadocJar, sourcesJar
 }
+
+
+
 signing {
     def signingKeyId = findProperty("signingKeyId")
     def signingKey = findProperty("signingKey")
     def signingPassword = findProperty("signingPassword")
-    if(signingKeyId != null && signingKey != null && signingPassword != null) {
-        useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
-        sign configurations.archives
-    }
+    if(signingKeyId == null || signingKey == null || signingPassword == null)
+        return
+    project.logger.lifecycle('Signing Archives')
+    useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
+    sign configurations.archives
 }
 
 def getEnvironmentVarIfDef(varName, defValue) {
@@ -91,6 +107,7 @@ if (!project.hasProperty("ossrhPassword")) {
   ext.ossrhPassword = getEnvironmentVarIfDef("OSSRH_PASSWORD", "OSSRH-PASSWORD-SHOULD-BE-DEFINED-EXTERNALLY")
 }
 
+
 //maven central
 uploadArchives {
   repositories {
@@ -106,16 +123,16 @@ uploadArchives {
       }
 
       pom.project {
-        name 'solar-edge-api-client'
+        name projectName
         packaging 'jar'
         // optionally artifactId can be defined here 
         description 'A simple API that abstracts fetching data from the solar edge api and getting back a POJO'
-        url 'https://github.com/akboyd88/solar-edge-api-client'
+        url projectUrl
 
         scm {
-          connection 'scm:git:https://github.com/akboyd88/solar-edge-api-client'
-          developerConnection 'scm:git:https://github.com/akboyd88/solar-edge-api-client'
-          url 'https://github.com/akboyd88/solar-edge-api-client'
+          connection 'scm:git:' + scmUrl
+          developerConnection 'scm:git:' + scmUrl
+          url scmUrl
         }
 
         licenses {
@@ -127,9 +144,9 @@ uploadArchives {
 
         developers {
           developer {
-            id 'akboyd88'
-            name 'Andrew Boyd'
-            email 'ninjacodingsolutions@protonmail.com'
+            id authorId
+            name authorName
+            email authorEmail
           }
         }
       }
