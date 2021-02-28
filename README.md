@@ -27,9 +27,9 @@ future.thenApplyAsync(resp ->{
 
 | Command | Supported | Batch/Multi Site Support
 | :---: | :---: | :---:
-| Get Current Version | :heavy_check_mark: | :cross_mark: 
-| Get Supported Versions | :heavy_check_mark: | :cross_mark:
-| Get Site Overview | :heavy_check_mark: | :cross_mark:
-| Detailed Energy Query | :heavy_check_mark: | :cross_mark: 
+| Get Current Version | :heavy_check_mark: | :x: 
+| Get Supported Versions | :heavy_check_mark: | :x:
+| Get Site Overview | :heavy_check_mark: | :x:
+| Detailed Energy Query | :heavy_check_mark: | :x: 
 
 
