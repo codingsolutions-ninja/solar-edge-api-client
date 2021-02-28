@@ -25,11 +25,11 @@ future.thenApplyAsync(resp ->{
 
 ### Command Support Table
 
-| Command | Supported | Since Version
+| Command | Supported | Batch/Multi Site Support
 | :---: | :---: | :---:
-| Get Current Version | :heavy_check_mark: | 0.1.0
-| Get Supported Versions | :heavy_check_mark: | 0.1.0
-| Get Site Overview | :heavy_check_mark: | 0.1.0
-| Detailed Energy Query | :heavy_check_mark: | 0.1.0
+| Get Current Version | :heavy_check_mark: | :cross_mark: 
+| Get Supported Versions | :heavy_check_mark: | :cross_mark:
+| Get Site Overview | :heavy_check_mark: | :cross_mark:
+| Detailed Energy Query | :heavy_check_mark: | :cross_mark: 
 
 
