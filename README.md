@@ -22,3 +22,14 @@ future.thenApplyAsync(resp ->{
         .getPower();))
 });
 ```
+
+### Command Support Table
+
+| Command | Supported | Since Version
+| :---: | :---: | :---:
+| Get Current Version | :heavy_check_mark: | 0.1.0
+| Get Supported Versions | :heavy_check_mark: | 0.1.0
+| Get Site Overview | :heavy_check_mark: | 0.1.0
+| Detailed Energy Query | :heavy_check_mark: | 0.1.0
+
+
