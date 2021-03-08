@@ -31,5 +31,8 @@ future.thenApplyAsync(resp ->{
 | Get Supported Versions | :heavy_check_mark: | :x:
 | Get Site Overview | :heavy_check_mark: | :x:
 | Detailed Energy Query | :heavy_check_mark: | :x: 
+| Get Site List | :x: | N/A
+| Get Power Flow | :x: | :x:
+| 
 
 

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import ninja.codingsolutions.solaredgeapiclient.interfaces.SolarEdgeApiClient;
 import ninja.codingsolutions.solaredgeapiclient.models.*;
+import ninja.codingsolutions.solaredgeapiclient.models.impl.*;
 
 import java.io.IOException;
 import java.net.URI;
@@ -74,7 +75,7 @@ public class SolarEdgeApiClientImpl implements SolarEdgeApiClient {
     @Override
     public CompletableFuture<SiteDetailsResponse> getSiteDetails(int siteId) {
         String url = String.format("%s/site/%s/details?api_key=%s", endPoint, siteId, apiKey);
-        return (CompletableFuture<SiteDetailsResponse>)getObjectFromResponse(url, client, SiteDetailsResponse.class);
+        return (CompletableFuture<SiteDetailsResponse>)getObjectFromResponse(url, client, SiteDetailsResponseImpl.class);
     }
 
     /**
@@ -87,7 +88,7 @@ public class SolarEdgeApiClientImpl implements SolarEdgeApiClient {
     @Override
     public CompletableFuture<OverviewResponse> getOverviewResponse(int siteId) {
         String url = String.format("%s/site/%s/overview?api_key=%s", endPoint, siteId, apiKey);
-        return (CompletableFuture<OverviewResponse>)getObjectFromResponse(url, client, OverviewResponse.class);
+        return (CompletableFuture<OverviewResponse>)getObjectFromResponse(url, client, OverviewResponseImpl.class);
     }
 
     /**
@@ -99,7 +100,7 @@ public class SolarEdgeApiClientImpl implements SolarEdgeApiClient {
     @Override
     public CompletableFuture<VersionResponse> getVersion() {
         String url = String.format("%s/version/current?api_key=%s", endPoint, apiKey);
-        return (CompletableFuture<VersionResponse>)getObjectFromResponse(url, client, VersionResponse.class);
+        return (CompletableFuture<VersionResponse>)getObjectFromResponse(url, client, VersionResponseImpl.class);
     }
 
     /**
@@ -111,7 +112,7 @@ public class SolarEdgeApiClientImpl implements SolarEdgeApiClient {
     @Override
     public CompletableFuture<SupportedVersionsResponse> getSupportedVersions() {
         String url = String.format("%s/version/supported?api_key=%s", endPoint, apiKey);
-        return (CompletableFuture<SupportedVersionsResponse>)getObjectFromResponse(url, client, SupportedVersionsResponse.class);
+        return (CompletableFuture<SupportedVersionsResponse>)getObjectFromResponse(url, client, SupportedVersionsResponseImpl.class);
     }
 
     /**
@@ -148,6 +149,6 @@ public class SolarEdgeApiClientImpl implements SolarEdgeApiClient {
                 startTimeString,
                 endTimeString,
                 apiKey);
-        return (CompletableFuture<DetailedEnergyResponse>)getObjectFromResponse(url, client, DetailedEnergyResponse.class);
+        return (CompletableFuture<DetailedEnergyResponse>)getObjectFromResponse(url, client, DetailedEnergyResponseImpl.class);
     }
 }

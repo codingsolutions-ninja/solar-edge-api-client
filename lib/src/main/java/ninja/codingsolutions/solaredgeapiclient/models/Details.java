@@ -1,31 +1,33 @@
 package ninja.codingsolutions.solaredgeapiclient.models;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.extern.jackson.Jacksonized;
+public interface Details {
+    int getId();
 
-import java.util.Date;
+    String getName();
 
-/**
- * Detailed site information
- */
-@Builder
-@Data
-@Jacksonized
-public class Details {
-    private int id;
-    private String name;
-    private int accountId;
-    private String status;
-    private double peakPower;
-    private Date lastUpdateTime;
-    private String currency;
-    private Date installationDate;
-    private String ptoDate;
-    private String notes;
-    private String type;
-    private Location location;
-    private PrimaryModule primaryModule;
-    private Uris uris;
-    private PublicSettings publicSettings;
+    int getAccountId();
+
+    String getStatus();
+
+    double getPeakPower();
+
+    java.util.Date getLastUpdateTime();
+
+    String getCurrency();
+
+    java.util.Date getInstallationDate();
+
+    String getPtoDate();
+
+    String getNotes();
+
+    String getType();
+
+    Location getLocation();
+
+    PrimaryModule getPrimaryModule();
+
+    Uris getUris();
+
+    PublicSettings getPublicSettings();
 }

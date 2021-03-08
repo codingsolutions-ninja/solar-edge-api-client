@@ -1,24 +1,21 @@
 package ninja.codingsolutions.solaredgeapiclient.models;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.extern.jackson.Jacksonized;
+public interface Location {
+    String getCountry();
 
-/**
- * Location of site described with
- * country, state, city, and address
- */
-@Builder
-@Data
-@Jacksonized
-public class Location {
-    private String country;
-    private String state;
-    private String city;
-    private String address;
-    private String address2;
-    private String zip;
-    private String timeZone;
-    private String countryCode;
-    private String stateCode;
+    String getState();
+
+    String getCity();
+
+    String getAddress();
+
+    String getAddress2();
+
+    String getZip();
+
+    String getTimeZone();
+
+    String getCountryCode();
+
+    String getStateCode();
 }
