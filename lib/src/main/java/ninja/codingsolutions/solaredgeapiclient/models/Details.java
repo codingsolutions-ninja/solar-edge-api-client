@@ -1,5 +1,10 @@
 package ninja.codingsolutions.solaredgeapiclient.models;
 
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import ninja.codingsolutions.solaredgeapiclient.models.impl.DetailsImpl;
+
+@JsonDeserialize(as = DetailsImpl.class)
 public interface Details {
     int getId();
 
