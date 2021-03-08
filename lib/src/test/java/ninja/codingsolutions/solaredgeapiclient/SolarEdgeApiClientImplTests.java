@@ -14,7 +14,6 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalAmount;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -170,17 +169,15 @@ class SolarEdgeApiClientImplTests {
             "    }\n" +
             "}";
 
-    private HttpClient mockClient;
     private HttpResponse<Object> mockResponse;
-    private CompletableFuture<HttpResponse<Object>> mockFuture;
     private SolarEdgeApiClient client;
 
     @SuppressWarnings("unchecked")
     @BeforeEach
     void setup(){
-        mockClient = Mockito.mock(HttpClient.class);
+        HttpClient mockClient = Mockito.mock(HttpClient.class);
         mockResponse = Mockito.mock(HttpResponse.class);
-        mockFuture = CompletableFuture.completedFuture(mockResponse);
+        CompletableFuture<HttpResponse<Object>> mockFuture = CompletableFuture.completedFuture(mockResponse);
         client = SolarEdgeClientFactory
                 .builder()
                 .apiKey("TEST")
@@ -192,7 +189,7 @@ class SolarEdgeApiClientImplTests {
                 .thenReturn(mockFuture);
     }
 
-    void returnJson(String jsonStr) {
+    private void returnJson(String jsonStr) {
         Mockito.when(mockResponse.body()).thenReturn(jsonStr);
     }
 
