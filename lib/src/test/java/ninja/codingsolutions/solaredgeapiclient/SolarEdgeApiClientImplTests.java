@@ -1,7 +1,16 @@
 package ninja.codingsolutions.solaredgeapiclient;
 
 import ninja.codingsolutions.solaredgeapiclient.interfaces.SolarEdgeApiClient;
-import ninja.codingsolutions.solaredgeapiclient.models.*;
+import ninja.codingsolutions.solaredgeapiclient.models.DetailedEnergyResponse;
+import ninja.codingsolutions.solaredgeapiclient.models.DetailedMeterEnergy;
+import ninja.codingsolutions.solaredgeapiclient.models.MeterType;
+import ninja.codingsolutions.solaredgeapiclient.models.OverviewResponse;
+import ninja.codingsolutions.solaredgeapiclient.models.PowerUnitType;
+import ninja.codingsolutions.solaredgeapiclient.models.SiteDetailsResponse;
+import ninja.codingsolutions.solaredgeapiclient.models.SupportedVersionsResponse;
+import ninja.codingsolutions.solaredgeapiclient.models.TimeUnitType;
+import ninja.codingsolutions.solaredgeapiclient.models.TimestampedValue;
+import ninja.codingsolutions.solaredgeapiclient.models.VersionResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

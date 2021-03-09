@@ -33,6 +33,5 @@ future.thenApplyAsync(resp ->{
 | Detailed Energy Query | :heavy_check_mark: | :x: 
 | Get Site List | :x: | N/A
 | Get Power Flow | :x: | :x:
-| 
 
 

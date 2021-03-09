@@ -1,6 +1,12 @@
 package ninja.codingsolutions.solaredgeapiclient.interfaces;
 
-import ninja.codingsolutions.solaredgeapiclient.models.*;
+import ninja.codingsolutions.solaredgeapiclient.models.DetailedEnergyResponse;
+import ninja.codingsolutions.solaredgeapiclient.models.MeterType;
+import ninja.codingsolutions.solaredgeapiclient.models.OverviewResponse;
+import ninja.codingsolutions.solaredgeapiclient.models.SiteDetailsResponse;
+import ninja.codingsolutions.solaredgeapiclient.models.SupportedVersionsResponse;
+import ninja.codingsolutions.solaredgeapiclient.models.TimeUnitType;
+import ninja.codingsolutions.solaredgeapiclient.models.VersionResponse;
 
 import java.time.ZonedDateTime;
 import java.util.List;

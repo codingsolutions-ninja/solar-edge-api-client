@@ -3,7 +3,11 @@ package ninja.codingsolutions.solaredgeapiclient.models.impl;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
-import ninja.codingsolutions.solaredgeapiclient.models.*;
+import ninja.codingsolutions.solaredgeapiclient.models.Details;
+import ninja.codingsolutions.solaredgeapiclient.models.Location;
+import ninja.codingsolutions.solaredgeapiclient.models.PrimaryModule;
+import ninja.codingsolutions.solaredgeapiclient.models.PublicSettings;
+import ninja.codingsolutions.solaredgeapiclient.models.Uris;
 
 import java.util.Date;
 
