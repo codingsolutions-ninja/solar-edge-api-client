@@ -1,18 +1,16 @@
 package ninja.codingsolutions.solaredgeapiclient.models;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.extern.jackson.Jacksonized;
 
-/**
- * Primary module (inverter) metrics
- */
-@Builder
-@Data
-@Jacksonized
-public class PrimaryModule {
-    private String manufacturerName;
-    private String modelName;
-    private double maximumPower;
-    private double temperatureCoef;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import ninja.codingsolutions.solaredgeapiclient.models.impl.PrimaryModuleImpl;
+
+@JsonDeserialize(as = PrimaryModuleImpl.class)
+public interface PrimaryModule {
+    String getManufacturerName();
+
+    String getModelName();
+
+    double getMaximumPower();
+
+    double getTemperatureCoef();
 }

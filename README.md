@@ -22,3 +22,16 @@ future.thenApplyAsync(resp ->{
         .getPower();))
 });
 ```
+
+### Command Support Table
+
+| Command | Supported | Batch/Multi Site Support
+| :---: | :---: | :---:
+| Get Current Version | :heavy_check_mark: | :x: 
+| Get Supported Versions | :heavy_check_mark: | :x:
+| Get Site Overview | :heavy_check_mark: | :x:
+| Detailed Energy Query | :heavy_check_mark: | :x: 
+| Get Site List | :x: | N/A
+| Get Power Flow | :x: | :x:
+
+

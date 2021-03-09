@@ -1,8 +1,16 @@
 package ninja.codingsolutions.solaredgeapiclient;
 
 import ninja.codingsolutions.solaredgeapiclient.interfaces.SolarEdgeApiClient;
+import ninja.codingsolutions.solaredgeapiclient.models.DetailedEnergyResponse;
+import ninja.codingsolutions.solaredgeapiclient.models.DetailedMeterEnergy;
+import ninja.codingsolutions.solaredgeapiclient.models.MeterType;
 import ninja.codingsolutions.solaredgeapiclient.models.OverviewResponse;
+import ninja.codingsolutions.solaredgeapiclient.models.PowerUnitType;
 import ninja.codingsolutions.solaredgeapiclient.models.SiteDetailsResponse;
+import ninja.codingsolutions.solaredgeapiclient.models.SupportedVersionsResponse;
+import ninja.codingsolutions.solaredgeapiclient.models.TimeUnitType;
+import ninja.codingsolutions.solaredgeapiclient.models.TimestampedValue;
+import ninja.codingsolutions.solaredgeapiclient.models.VersionResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,12 +20,98 @@ import java.net.http.HttpClient;
 import java.net.http.HttpResponse;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 class SolarEdgeApiClientImplTests {
+
+    private static final String standardDetailedEnergyResponse = "{\n" +
+            "    \"energyDetails\": {\n" +
+            "        \"timeUnit\": \"DAY\",\n" +
+            "        \"unit\": \"Wh\",\n" +
+            "        \"meters\": [\n" +
+            "            {\n" +
+            "                \"type\": \"Production\",\n" +
+            "                \"values\": [\n" +
+            "                    {\n" +
+            "                        \"date\": \"2021-02-01 00:00:00\",\n" +
+            "                        \"value\": 49150.0\n" +
+            "                    },\n" +
+            "                    {\n" +
+            "                        \"date\": \"2021-02-02 00:00:00\",\n" +
+            "                        \"value\": 46183.0\n" +
+            "                    },\n" +
+            "                    {\n" +
+            "                        \"date\": \"2021-02-03 00:00:00\",\n" +
+            "                        \"value\": 46574.0\n" +
+            "                    },\n" +
+            "                    {\n" +
+            "                        \"date\": \"2021-02-04 00:00:00\",\n" +
+            "                        \"value\": 36582.0\n" +
+            "                    },\n" +
+            "                    {\n" +
+            "                        \"date\": \"2021-02-05 00:00:00\",\n" +
+            "                        \"value\": 19077.0\n" +
+            "                    },\n" +
+            "                    {\n" +
+            "                        \"date\": \"2021-02-06 00:00:00\",\n" +
+            "                        \"value\": 38874.0\n" +
+            "                    }\n" +
+            "                ]\n" +
+            "            },\n" +
+            "            {\n" +
+            "                \"type\": \"Consumption\",\n" +
+            "                \"values\": [\n" +
+            "                    {\n" +
+            "                        \"date\": \"2021-02-01 00:00:00\",\n" +
+            "                        \"value\": 49150.0\n" +
+            "                    },\n" +
+            "                    {\n" +
+            "                        \"date\": \"2021-02-02 00:00:00\",\n" +
+            "                        \"value\": 46183.0\n" +
+            "                    },\n" +
+            "                    {\n" +
+            "                        \"date\": \"2021-02-03 00:00:00\",\n" +
+            "                        \"value\": 46574.0\n" +
+            "                    },\n" +
+            "                    {\n" +
+            "                        \"date\": \"2021-02-04 00:00:00\",\n" +
+            "                        \"value\": 36582.0\n" +
+            "                    },\n" +
+            "                    {\n" +
+            "                        \"date\": \"2021-02-05 00:00:00\",\n" +
+            "                        \"value\": 19077.0\n" +
+            "                    },\n" +
+            "                    {\n" +
+            "                        \"date\": \"2021-02-06 00:00:00\",\n" +
+            "                        \"value\": 38874.0\n" +
+            "                    }\n" +
+            "                ]\n" +
+            "            }\n" +
+            "        ]\n" +
+            "    }\n" +
+            "}";
+
+    private static final String standardVersionJsonResponse = "{\n" +
+            "    \"version\": {\n" +
+            "        \"release\": \"1.0.0\"\n" +
+            "    }\n" +
+            "}";
+
+    private static final String standardSupportedVersionsResponse = "{\n" +
+            "    \"supported\": [\n" +
+            "        {\n" +
+            "            \"release\": \"1.0.0\"\n" +
+            "        }\n" +
+            "    ]\n" +
+            "}";
 
     private static final String standardOverviewJsonResponse = "{\n" +
             "    \"overview\": {\n" +
@@ -84,17 +178,15 @@ class SolarEdgeApiClientImplTests {
             "    }\n" +
             "}";
 
-    private HttpClient mockClient;
     private HttpResponse<Object> mockResponse;
-    private CompletableFuture<HttpResponse<Object>> mockFuture;
     private SolarEdgeApiClient client;
 
     @SuppressWarnings("unchecked")
     @BeforeEach
     void setup(){
-        mockClient = Mockito.mock(HttpClient.class);
+        HttpClient mockClient = Mockito.mock(HttpClient.class);
         mockResponse = Mockito.mock(HttpResponse.class);
-        mockFuture = CompletableFuture.completedFuture(mockResponse);
+        CompletableFuture<HttpResponse<Object>> mockFuture = CompletableFuture.completedFuture(mockResponse);
         client = SolarEdgeClientFactory
                 .builder()
                 .apiKey("TEST")
@@ -106,7 +198,7 @@ class SolarEdgeApiClientImplTests {
                 .thenReturn(mockFuture);
     }
 
-    void returnJson(String jsonStr) {
+    private void returnJson(String jsonStr) {
         Mockito.when(mockResponse.body()).thenReturn(jsonStr);
     }
 
@@ -186,5 +278,54 @@ class SolarEdgeApiClientImplTests {
         Assertions.assertEquals("MSE310SQ8T", resp.getDetails().getPrimaryModule().getModelName());
         Assertions.assertEquals(310.0, resp.getDetails().getPrimaryModule().getMaximumPower());
         Assertions.assertEquals( -0.43, resp.getDetails().getPrimaryModule().getTemperatureCoef());
+    }
+
+    @Test
+    void canGetVersion() throws ExecutionException, InterruptedException {
+        returnJson(standardVersionJsonResponse);
+        Future<VersionResponse> response = client.getVersion();
+        VersionResponse version = response.get();
+        Assertions.assertNotNull(version);
+        Assertions.assertNotNull(version.getVersion());
+        Assertions.assertEquals("1.0.0", version.getVersion().getRelease());
+
+    }
+
+    @Test
+    void canGetSupportedVersions() throws ExecutionException, InterruptedException {
+        returnJson(standardSupportedVersionsResponse);
+        Future<SupportedVersionsResponse> response = client.getSupportedVersions();
+        SupportedVersionsResponse version = response.get();
+        Assertions.assertNotNull(version);
+        Assertions.assertNotNull(version.getSupported());
+        Assertions.assertEquals(1, version.getSupported().size());
+        Assertions.assertEquals("1.0.0", version.getSupported().get(0).getRelease());
+    }
+
+    @Test
+    void canGetEnergyDetails() throws ExecutionException, InterruptedException {
+        returnJson(standardDetailedEnergyResponse);
+        Future<DetailedEnergyResponse> response = client.getDetailedEnergyReport(
+                1111,
+                List.of(MeterType.CONSUMPTION, MeterType.PRODUCTION),
+                TimeUnitType.DAY,
+                ZonedDateTime.now().minus(Duration.of(1, ChronoUnit.DAYS)),
+                ZonedDateTime.now()
+            );
+        DetailedEnergyResponse detailedEnergyResponse = response.get();
+        Assertions.assertNotNull(detailedEnergyResponse);
+        Assertions.assertNotNull(detailedEnergyResponse.getEnergyDetails());
+        Assertions.assertEquals(PowerUnitType.WH, detailedEnergyResponse.getEnergyDetails().getUnit());
+        Assertions.assertEquals(TimeUnitType.DAY, detailedEnergyResponse.getEnergyDetails().getTimeUnit());
+        Assertions.assertEquals(2, detailedEnergyResponse.getEnergyDetails().getMeters().size());
+        for(DetailedMeterEnergy meterEnergy : detailedEnergyResponse.getEnergyDetails().getMeters()){
+            Assertions.assertNotNull(meterEnergy);
+            Assertions.assertNotNull(meterEnergy.getType());
+            Assertions.assertTrue(meterEnergy.getValues().size() > 0);
+            for(TimestampedValue energyValue : meterEnergy.getValues()) {
+                Assertions.assertTrue(energyValue.getValue() > 0);
+                Assertions.assertTrue(energyValue.getDate().after(new Date(0)));
+            }
+        }
     }
 }

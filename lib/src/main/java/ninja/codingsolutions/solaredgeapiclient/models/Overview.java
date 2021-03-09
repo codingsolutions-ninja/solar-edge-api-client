@@ -1,25 +1,21 @@
 package ninja.codingsolutions.solaredgeapiclient.models;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Builder;
-import lombok.Data;
-import lombok.extern.jackson.Jacksonized;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import ninja.codingsolutions.solaredgeapiclient.models.impl.OverviewImpl;
 
-import java.util.Date;
+@JsonDeserialize(as = OverviewImpl.class)
+public interface Overview {
+    java.util.Date getLastUpdateTime();
 
-/**
- * Site overview information
- */
-@Data
-@Builder
-@Jacksonized
-public class Overview {
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
-    private Date lastUpdateTime;
-    private LifeTimeData lifeTimeData;
-    private EnergyData lastYearData;
-    private EnergyData lastMonthData;
-    private EnergyData lastDayData;
-    private PowerData currentPower;
-    private String measuredBy;
+    LifeTimeData getLifeTimeData();
+
+    EnergyData getLastYearData();
+
+    EnergyData getLastMonthData();
+
+    EnergyData getLastDayData();
+
+    PowerData getCurrentPower();
+
+    String getMeasuredBy();
 }

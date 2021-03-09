@@ -1,14 +1,9 @@
 package ninja.codingsolutions.solaredgeapiclient.models;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import ninja.codingsolutions.solaredgeapiclient.models.impl.LifeTimeDataImpl;
 
-/**
- * Lifetime value of energy in kWh and
- * revenue in USD
- */
-@Data
-@EqualsAndHashCode(callSuper=false)
-public class LifeTimeData extends EnergyData {
-    private double revenue;
+@JsonDeserialize(as = LifeTimeDataImpl.class)
+public interface LifeTimeData extends EnergyData {
+    double getRevenue();
 }

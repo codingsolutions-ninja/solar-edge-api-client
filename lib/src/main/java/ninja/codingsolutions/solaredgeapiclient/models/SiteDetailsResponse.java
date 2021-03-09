@@ -1,15 +1,10 @@
 package ninja.codingsolutions.solaredgeapiclient.models;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.extern.jackson.Jacksonized;
 
-/**
- * Detailed site response from API
- */
-@Data
-@Builder
-@Jacksonized
-public class SiteDetailsResponse {
-    private Details details;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import ninja.codingsolutions.solaredgeapiclient.models.impl.SiteDetailsResponseImpl;
+
+@JsonDeserialize(as = SiteDetailsResponseImpl.class)
+public interface SiteDetailsResponse {
+    Details getDetails();
 }

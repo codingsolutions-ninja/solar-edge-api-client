@@ -1,15 +1,9 @@
 package ninja.codingsolutions.solaredgeapiclient.models;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.extern.jackson.Jacksonized;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import ninja.codingsolutions.solaredgeapiclient.models.impl.PowerDataImpl;
 
-/**
- * Power data in kWh
- */
-@Data
-@Builder
-@Jacksonized
-public class PowerData {
-    private double power;
+@JsonDeserialize(as = PowerDataImpl.class)
+public interface PowerData {
+    double getPower();
 }
