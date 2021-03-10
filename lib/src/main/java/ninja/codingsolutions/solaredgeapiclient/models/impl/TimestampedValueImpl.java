@@ -8,6 +8,9 @@ import ninja.codingsolutions.solaredgeapiclient.models.TimestampedValue;
 
 import java.util.Date;
 
+/**
+ * Implementation of {TimestampedValue}
+ */
 @Builder
 @Jacksonized
 @Data

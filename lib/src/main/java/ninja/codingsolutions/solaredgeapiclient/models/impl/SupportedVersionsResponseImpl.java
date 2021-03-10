@@ -8,6 +8,9 @@ import ninja.codingsolutions.solaredgeapiclient.models.Version;
 
 import java.util.List;
 
+/**
+ * Implementation of {SupportedVersionsResponse}
+ */
 @Data
 @Builder
 @Jacksonized

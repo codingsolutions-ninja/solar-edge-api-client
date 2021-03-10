@@ -6,6 +6,9 @@ import lombok.extern.jackson.Jacksonized;
 import ninja.codingsolutions.solaredgeapiclient.models.Version;
 import ninja.codingsolutions.solaredgeapiclient.models.VersionResponse;
 
+/**
+ * Implementation of {VersionResponse}
+ */
 @Data
 @Builder
 @Jacksonized

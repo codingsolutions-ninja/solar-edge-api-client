@@ -26,11 +26,19 @@ public enum MeterType {
         this.value = val;
     }
 
+    /**
+     * Get the type of the meter type, this could be Production, Consumption
+     * @return {String} string value of the enum type
+     */
     @JsonValue
     public String getType() {
         return this.type;
     }
 
+    /**
+     * Get the enum value of the meter type, PRODUCTION = 0, CONSUMPTION = 1
+     * @return {short} numerical representation of the enum type
+     */
     public short getValue() {
         return this.value;
     }
