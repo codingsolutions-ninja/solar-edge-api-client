@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+-  Added javadoc comment blocks to interfaces
 -  Support for api commands to fetch the api current version, supported versions, 
     and detailed energy report.
 - Created CHANGELOG.md
