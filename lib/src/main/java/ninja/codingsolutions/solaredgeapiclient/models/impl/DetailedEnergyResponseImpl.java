@@ -6,6 +6,9 @@ import lombok.extern.jackson.Jacksonized;
 import ninja.codingsolutions.solaredgeapiclient.models.DetailedEnergyResponse;
 import ninja.codingsolutions.solaredgeapiclient.models.EnergyDetails;
 
+/**
+ * Implementation of {DetailedEnergyResponse}
+ */
 @Data
 @Builder
 @Jacksonized

@@ -9,6 +9,9 @@ import ninja.codingsolutions.solaredgeapiclient.models.TimestampedValue;
 
 import java.util.List;
 
+/**
+ * Implementation of {DetailedMeterEnergy}
+ */
 @Builder
 @Jacksonized
 @Data

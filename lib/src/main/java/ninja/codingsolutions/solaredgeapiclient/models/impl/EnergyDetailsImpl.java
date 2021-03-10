@@ -10,6 +10,9 @@ import ninja.codingsolutions.solaredgeapiclient.models.TimeUnitType;
 
 import java.util.List;
 
+/**
+ * Implementation of {EnergyDetails}
+ */
 @Data
 @Builder
 @Jacksonized

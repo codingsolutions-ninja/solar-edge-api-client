@@ -5,6 +5,9 @@ import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
 import ninja.codingsolutions.solaredgeapiclient.models.Version;
 
+/**
+ * Implementation of {Version}
+ */
 @Data
 @Jacksonized
 @Builder
