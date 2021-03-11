@@ -8,7 +8,7 @@ import ninja.codingsolutions.solaredgeapiclient.models.impl.SiteDetailsResponseI
  * API response to a site details requests
  */
 @JsonDeserialize(as = SiteDetailsResponseImpl.class)
-public interface SiteDetailsResponse {
+public interface SiteDetailsResponse extends ApiResponse {
     /**
      * Get the site details
      * @return {Details} site details

@@ -8,7 +8,7 @@ import ninja.codingsolutions.solaredgeapiclient.models.impl.OverviewResponseImpl
  * API response to a request for overview data
  */
 @JsonDeserialize(as = OverviewResponseImpl.class)
-public interface OverviewResponse {
+public interface OverviewResponse  extends ApiResponse {
     /**
      * get the overview data
      * @return {Overview} overview data

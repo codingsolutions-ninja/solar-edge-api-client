@@ -4,6 +4,8 @@ package ninja.codingsolutions.solaredgeapiclient.models;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import ninja.codingsolutions.solaredgeapiclient.models.impl.TimestampedValueImpl;
 
+import java.util.Date;
+
 /**
  * Timestamped value, typically for energy production or consumption
  */
@@ -13,7 +15,7 @@ public interface TimestampedValue {
      * Date of energy measurement
      * @return {java.util.Date} date associated with measurement in site timezone
      */
-    java.util.Date getDate();
+    Date getDate();
 
     /**
      * Get the measurement value

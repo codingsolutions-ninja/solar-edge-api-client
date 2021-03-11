@@ -7,7 +7,7 @@ import ninja.codingsolutions.solaredgeapiclient.models.impl.VersionResponseImpl;
  * The API response for a current version request
  */
 @JsonDeserialize(as = VersionResponseImpl.class)
-public interface VersionResponse {
+public interface VersionResponse extends ApiResponse {
     /**
      * Get the current version of the solar edge API
      * @return {Version} current version

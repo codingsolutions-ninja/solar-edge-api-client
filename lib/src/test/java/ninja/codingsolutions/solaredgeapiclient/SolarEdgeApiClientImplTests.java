@@ -1,6 +1,7 @@
 package ninja.codingsolutions.solaredgeapiclient;
 
 import ninja.codingsolutions.solaredgeapiclient.interfaces.SolarEdgeApiClient;
+import ninja.codingsolutions.solaredgeapiclient.models.ApiResponse;
 import ninja.codingsolutions.solaredgeapiclient.models.DetailedEnergyResponse;
 import ninja.codingsolutions.solaredgeapiclient.models.DetailedMeterEnergy;
 import ninja.codingsolutions.solaredgeapiclient.models.MeterType;
@@ -202,12 +203,21 @@ class SolarEdgeApiClientImplTests {
         Mockito.when(mockResponse.body()).thenReturn(jsonStr);
     }
 
+    void assertSiteInformationIsPresent(ApiResponse apiResponse) {
+        Assertions.assertTrue(apiResponse.getSiteIds().isPresent() && apiResponse.getSiteIds().get().size() > 0);
+    }
+
+    void assertSiteInformationIsNotPresent(ApiResponse apiResponse) {
+        Assertions.assertFalse(apiResponse.getSiteIds().isPresent());
+    }
+
     @Test
     void canGetSiteOverview() throws ExecutionException, InterruptedException {
         returnJson(standardOverviewJsonResponse);
         Future<OverviewResponse> response = client.getOverviewResponse(1111);
         OverviewResponse resp = response.get();
         Assertions.assertNotNull(resp);
+        assertSiteInformationIsPresent(resp);
         Assertions.assertNotNull(resp.getOverview());
         Assertions.assertNotNull(resp.getOverview().getLifeTimeData());
         Assertions.assertNotNull(resp.getOverview().getLastDayData());
@@ -234,6 +244,7 @@ class SolarEdgeApiClientImplTests {
         Future<SiteDetailsResponse> response = client.getSiteDetails(1111);
         SiteDetailsResponse resp = response.get();
         Assertions.assertNotNull(resp);
+        assertSiteInformationIsPresent(resp);
         Assertions.assertNotNull(resp.getDetails());
         Assertions.assertEquals(1, resp.getDetails().getId());
         Assertions.assertEquals("John Smith", resp.getDetails().getName());
@@ -286,6 +297,7 @@ class SolarEdgeApiClientImplTests {
         Future<VersionResponse> response = client.getVersion();
         VersionResponse version = response.get();
         Assertions.assertNotNull(version);
+        assertSiteInformationIsNotPresent(version);
         Assertions.assertNotNull(version.getVersion());
         Assertions.assertEquals("1.0.0", version.getVersion().getRelease());
 
@@ -297,6 +309,7 @@ class SolarEdgeApiClientImplTests {
         Future<SupportedVersionsResponse> response = client.getSupportedVersions();
         SupportedVersionsResponse version = response.get();
         Assertions.assertNotNull(version);
+        assertSiteInformationIsNotPresent(version);
         Assertions.assertNotNull(version.getSupported());
         Assertions.assertEquals(1, version.getSupported().size());
         Assertions.assertEquals("1.0.0", version.getSupported().get(0).getRelease());
@@ -314,6 +327,7 @@ class SolarEdgeApiClientImplTests {
             );
         DetailedEnergyResponse detailedEnergyResponse = response.get();
         Assertions.assertNotNull(detailedEnergyResponse);
+        assertSiteInformationIsPresent(detailedEnergyResponse);
         Assertions.assertNotNull(detailedEnergyResponse.getEnergyDetails());
         Assertions.assertEquals(PowerUnitType.WH, detailedEnergyResponse.getEnergyDetails().getUnit());
         Assertions.assertEquals(TimeUnitType.DAY, detailedEnergyResponse.getEnergyDetails().getTimeUnit());
