@@ -17,6 +17,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.io.IOException;
 import java.net.http.HttpClient;
 import java.net.http.HttpResponse;
 import java.text.ParseException;
@@ -180,12 +181,13 @@ class SolarEdgeApiClientImplTests {
             "}";
 
     private HttpResponse<Object> mockResponse;
+    private HttpClient mockClient;
     private SolarEdgeApiClient client;
 
     @SuppressWarnings("unchecked")
     @BeforeEach
     void setup(){
-        HttpClient mockClient = Mockito.mock(HttpClient.class);
+        mockClient = Mockito.mock(HttpClient.class);
         mockResponse = Mockito.mock(HttpResponse.class);
         CompletableFuture<HttpResponse<Object>> mockFuture = CompletableFuture.completedFuture(mockResponse);
         client = SolarEdgeClientFactory
@@ -203,11 +205,15 @@ class SolarEdgeApiClientImplTests {
         Mockito.when(mockResponse.body()).thenReturn(jsonStr);
     }
 
-    void assertSiteInformationIsPresent(ApiResponse apiResponse) {
+    private void throwOnRequest(Throwable e) {
+        Mockito.when(mockClient.sendAsync(Mockito.any(), Mockito.any())).thenReturn(CompletableFuture.failedFuture(e));
+    }
+
+    private void assertSiteInformationIsPresent(ApiResponse apiResponse) {
         Assertions.assertTrue(apiResponse.getSiteIds().isPresent() && apiResponse.getSiteIds().get().size() > 0);
     }
 
-    void assertSiteInformationIsNotPresent(ApiResponse apiResponse) {
+    private void assertSiteInformationIsNotPresent(ApiResponse apiResponse) {
         Assertions.assertFalse(apiResponse.getSiteIds().isPresent());
     }
 
@@ -313,6 +319,16 @@ class SolarEdgeApiClientImplTests {
         Assertions.assertNotNull(version.getSupported());
         Assertions.assertEquals(1, version.getSupported().size());
         Assertions.assertEquals("1.0.0", version.getSupported().get(0).getRelease());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void exceptionsBubble() throws ExecutionException, InterruptedException, ClassNotFoundException {
+        throwOnRequest(new IOException("TEST Exception"));
+        CompletableFuture<SupportedVersionsResponse> response = client.getSupportedVersions();
+        Class<? extends Exception> cls = (Class<? extends Exception>) Class.forName("java.lang.Exception");
+        Assertions.assertThrows(cls, response::get);
+        Assertions.assertTrue(response.isCompletedExceptionally());
     }
 
     @Test
