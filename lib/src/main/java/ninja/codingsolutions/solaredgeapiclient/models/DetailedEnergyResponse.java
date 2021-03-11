@@ -8,7 +8,7 @@ import ninja.codingsolutions.solaredgeapiclient.models.impl.DetailedEnergyRespon
  * over a period of time
  */
 @JsonDeserialize(as = DetailedEnergyResponseImpl.class)
-public interface DetailedEnergyResponse {
+public interface DetailedEnergyResponse extends ApiResponse {
     /**
      * EnergyDetails, contains time unit type, power unit type, and data points of energy data
      * over a period of time

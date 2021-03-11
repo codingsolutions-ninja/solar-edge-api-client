@@ -1,6 +1,7 @@
 package ninja.codingsolutions.solaredgeapiclient;
 
 import ninja.codingsolutions.solaredgeapiclient.interfaces.SolarEdgeApiClient;
+import ninja.codingsolutions.solaredgeapiclient.models.ApiResponse;
 import ninja.codingsolutions.solaredgeapiclient.models.DetailedEnergyResponse;
 import ninja.codingsolutions.solaredgeapiclient.models.DetailedMeterEnergy;
 import ninja.codingsolutions.solaredgeapiclient.models.MeterType;
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.io.IOException;
 import java.net.http.HttpClient;
 import java.net.http.HttpResponse;
 import java.text.ParseException;
@@ -179,12 +181,13 @@ class SolarEdgeApiClientImplTests {
             "}";
 
     private HttpResponse<Object> mockResponse;
+    private HttpClient mockClient;
     private SolarEdgeApiClient client;
 
     @SuppressWarnings("unchecked")
     @BeforeEach
     void setup(){
-        HttpClient mockClient = Mockito.mock(HttpClient.class);
+        mockClient = Mockito.mock(HttpClient.class);
         mockResponse = Mockito.mock(HttpResponse.class);
         CompletableFuture<HttpResponse<Object>> mockFuture = CompletableFuture.completedFuture(mockResponse);
         client = SolarEdgeClientFactory
@@ -202,12 +205,25 @@ class SolarEdgeApiClientImplTests {
         Mockito.when(mockResponse.body()).thenReturn(jsonStr);
     }
 
+    private void throwOnRequest(Throwable e) {
+        Mockito.when(mockClient.sendAsync(Mockito.any(), Mockito.any())).thenReturn(CompletableFuture.failedFuture(e));
+    }
+
+    private void assertSiteInformationIsPresent(ApiResponse apiResponse) {
+        Assertions.assertTrue(apiResponse.getSiteIds().isPresent() && apiResponse.getSiteIds().get().size() > 0);
+    }
+
+    private void assertSiteInformationIsNotPresent(ApiResponse apiResponse) {
+        Assertions.assertFalse(apiResponse.getSiteIds().isPresent());
+    }
+
     @Test
     void canGetSiteOverview() throws ExecutionException, InterruptedException {
         returnJson(standardOverviewJsonResponse);
         Future<OverviewResponse> response = client.getOverviewResponse(1111);
         OverviewResponse resp = response.get();
         Assertions.assertNotNull(resp);
+        assertSiteInformationIsPresent(resp);
         Assertions.assertNotNull(resp.getOverview());
         Assertions.assertNotNull(resp.getOverview().getLifeTimeData());
         Assertions.assertNotNull(resp.getOverview().getLastDayData());
@@ -234,6 +250,7 @@ class SolarEdgeApiClientImplTests {
         Future<SiteDetailsResponse> response = client.getSiteDetails(1111);
         SiteDetailsResponse resp = response.get();
         Assertions.assertNotNull(resp);
+        assertSiteInformationIsPresent(resp);
         Assertions.assertNotNull(resp.getDetails());
         Assertions.assertEquals(1, resp.getDetails().getId());
         Assertions.assertEquals("John Smith", resp.getDetails().getName());
@@ -286,6 +303,7 @@ class SolarEdgeApiClientImplTests {
         Future<VersionResponse> response = client.getVersion();
         VersionResponse version = response.get();
         Assertions.assertNotNull(version);
+        assertSiteInformationIsNotPresent(version);
         Assertions.assertNotNull(version.getVersion());
         Assertions.assertEquals("1.0.0", version.getVersion().getRelease());
 
@@ -297,9 +315,20 @@ class SolarEdgeApiClientImplTests {
         Future<SupportedVersionsResponse> response = client.getSupportedVersions();
         SupportedVersionsResponse version = response.get();
         Assertions.assertNotNull(version);
+        assertSiteInformationIsNotPresent(version);
         Assertions.assertNotNull(version.getSupported());
         Assertions.assertEquals(1, version.getSupported().size());
         Assertions.assertEquals("1.0.0", version.getSupported().get(0).getRelease());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void exceptionsBubble() throws ExecutionException, InterruptedException, ClassNotFoundException {
+        throwOnRequest(new IOException("TEST Exception"));
+        CompletableFuture<SupportedVersionsResponse> response = client.getSupportedVersions();
+        Class<? extends Exception> cls = (Class<? extends Exception>) Class.forName("java.lang.Exception");
+        Assertions.assertThrows(cls, response::get);
+        Assertions.assertTrue(response.isCompletedExceptionally());
     }
 
     @Test
@@ -314,6 +343,7 @@ class SolarEdgeApiClientImplTests {
             );
         DetailedEnergyResponse detailedEnergyResponse = response.get();
         Assertions.assertNotNull(detailedEnergyResponse);
+        assertSiteInformationIsPresent(detailedEnergyResponse);
         Assertions.assertNotNull(detailedEnergyResponse.getEnergyDetails());
         Assertions.assertEquals(PowerUnitType.WH, detailedEnergyResponse.getEnergyDetails().getUnit());
         Assertions.assertEquals(TimeUnitType.DAY, detailedEnergyResponse.getEnergyDetails().getTimeUnit());

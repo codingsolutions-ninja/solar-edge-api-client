@@ -4,6 +4,8 @@ package ninja.codingsolutions.solaredgeapiclient.models;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import ninja.codingsolutions.solaredgeapiclient.models.impl.DetailsImpl;
 
+import java.util.Date;
+
 /**
  * SolarEdge site details containing, id, name, account id etc
  */
@@ -44,7 +46,7 @@ public interface Details {
      * on 15 minute intervals
      * @return {java.util.Date} last update time of the site
      */
-    java.util.Date getLastUpdateTime();
+    Date getLastUpdateTime();
 
     /**
      * Get an estimate of the total value of the energy produced by the site
@@ -58,7 +60,7 @@ public interface Details {
      * @return {java.util.Date} The date on which the site was installed, production start dates may vary
      * based on locality approval
      */
-    java.util.Date getInstallationDate();
+    Date getInstallationDate();
 
     /**
      * TODO: get more information on this value

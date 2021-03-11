@@ -3,6 +3,8 @@ package ninja.codingsolutions.solaredgeapiclient.models;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import ninja.codingsolutions.solaredgeapiclient.models.impl.OverviewImpl;
 
+import java.util.Date;
+
 /**
  * Site Overview
  */
@@ -12,7 +14,7 @@ public interface Overview {
      * Get the last update time of the site, is in timezone of the site
      * @return {java.util.Date} Date of last update
      */
-    java.util.Date getLastUpdateTime();
+    Date getLastUpdateTime();
 
     /**
      * get the lifetime date of the site

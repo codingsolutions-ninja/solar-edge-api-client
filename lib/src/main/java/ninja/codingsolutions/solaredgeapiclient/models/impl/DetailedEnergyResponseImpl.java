@@ -9,9 +9,10 @@ import ninja.codingsolutions.solaredgeapiclient.models.EnergyDetails;
 /**
  * Implementation of {DetailedEnergyResponse}
  */
+@lombok.EqualsAndHashCode(callSuper = true)
 @Data
 @Builder
 @Jacksonized
-public class DetailedEnergyResponseImpl implements DetailedEnergyResponse {
+public class DetailedEnergyResponseImpl extends ApiResponseImpl implements DetailedEnergyResponse {
     private final EnergyDetails energyDetails;
 }

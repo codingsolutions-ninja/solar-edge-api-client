@@ -3,6 +3,8 @@ package ninja.codingsolutions.solaredgeapiclient.models;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import ninja.codingsolutions.solaredgeapiclient.models.impl.DetailedMeterEnergyImpl;
 
+import java.util.List;
+
 /**
  * Detailed meter data from a solar edge site over a period of time scoped to a meter type
  */
@@ -19,5 +21,5 @@ public interface DetailedMeterEnergy {
      * Timestamped values of energy used or produced
      * @return {java.util.List} A list of time stamped values with associated energy values
      */
-    java.util.List<TimestampedValue> getValues();
+    List<TimestampedValue> getValues();
 }

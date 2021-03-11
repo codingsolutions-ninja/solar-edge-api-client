@@ -3,6 +3,8 @@ package ninja.codingsolutions.solaredgeapiclient.models;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import ninja.codingsolutions.solaredgeapiclient.models.impl.EnergyDetailsImpl;
 
+import java.util.List;
+
 /**
  * Energy details
  */
@@ -24,5 +26,5 @@ public interface EnergyDetails {
      * Get the list of detailed energy data associated with each meter on site
      * @return {java.util.List} list of detailed meter energy data
      */
-    java.util.List<DetailedMeterEnergy> getMeters();
+    List<DetailedMeterEnergy> getMeters();
 }

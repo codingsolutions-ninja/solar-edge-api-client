@@ -3,6 +3,7 @@ package ninja.codingsolutions.solaredgeapiclient;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import ninja.codingsolutions.solaredgeapiclient.interfaces.SolarEdgeApiClient;
+import ninja.codingsolutions.solaredgeapiclient.models.ApiResponse;
 import ninja.codingsolutions.solaredgeapiclient.models.DetailedEnergyResponse;
 import ninja.codingsolutions.solaredgeapiclient.models.MeterType;
 import ninja.codingsolutions.solaredgeapiclient.models.OverviewResponse;
@@ -25,6 +26,7 @@ import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
@@ -45,8 +47,14 @@ public class SolarEdgeApiClientImpl implements SolarEdgeApiClient {
 
     private static final String ENERGY_DETAILS_URL = "%s/site/%s/energyDetails?meters=%s&timeUnit=%s&startTime=%s&endTime=%s&api_key=%s";
 
-    private static <T> T getMessageFromBody(String jsonStr, Class<T> cls) throws IOException {
+    private static <T extends ApiResponse> T getMessageFromBody(String jsonStr, Class<T> cls) throws IOException {
         return mapper.readValue(jsonStr, cls);
+    }
+
+    private static List<Integer> buildSiteIdListFromSingleValue(Integer siteId) {
+        List<Integer> siteIds = new ArrayList<>();
+        siteIds.add(siteId);
+        return siteIds;
     }
 
 
@@ -64,14 +72,16 @@ public class SolarEdgeApiClientImpl implements SolarEdgeApiClient {
         return URLEncoder.encode(val, StandardCharsets.UTF_8);
     }
 
-    private CompletableFuture<?> getObjectFromResponse(String url, HttpClient client, Class<?> cl){
+    private CompletableFuture<? extends ApiResponse>getObjectFromResponse(String url, HttpClient client, Class<? extends ApiResponse> cl, List<Integer> siteIds){
         var ref = new Object() {
-            CompletableFuture<?> cResp = null;
+            CompletableFuture<? extends ApiResponse> cResp = null;
         };
         ref.cResp = getResponseFromApi(url, client)
                 .thenApplyAsync(resp -> {
                     try {
-                        return getMessageFromBody(resp, cl);
+                        ApiResponse apiResp = getMessageFromBody(resp, cl);
+                        apiResp.setSiteIds(siteIds);
+                        return apiResp;
                     } catch (IOException e) {
                         ref.cResp.completeExceptionally(e);
                         return null;
@@ -85,7 +95,7 @@ public class SolarEdgeApiClientImpl implements SolarEdgeApiClient {
     @Override
     public CompletableFuture<SiteDetailsResponse> getSiteDetails(int siteId) {
         String url = String.format("%s/site/%s/details?api_key=%s", endPoint, siteId, apiKey);
-        return (CompletableFuture<SiteDetailsResponse>)getObjectFromResponse(url, client, SiteDetailsResponseImpl.class);
+        return (CompletableFuture<SiteDetailsResponse>)getObjectFromResponse(url, client, SiteDetailsResponseImpl.class, buildSiteIdListFromSingleValue(siteId));
     }
 
     /**
@@ -98,7 +108,7 @@ public class SolarEdgeApiClientImpl implements SolarEdgeApiClient {
     @Override
     public CompletableFuture<OverviewResponse> getOverviewResponse(int siteId) {
         String url = String.format("%s/site/%s/overview?api_key=%s", endPoint, siteId, apiKey);
-        return (CompletableFuture<OverviewResponse>)getObjectFromResponse(url, client, OverviewResponseImpl.class);
+        return (CompletableFuture<OverviewResponse>)getObjectFromResponse(url, client, OverviewResponseImpl.class, buildSiteIdListFromSingleValue(siteId));
     }
 
     /**
@@ -110,7 +120,7 @@ public class SolarEdgeApiClientImpl implements SolarEdgeApiClient {
     @Override
     public CompletableFuture<VersionResponse> getVersion() {
         String url = String.format("%s/version/current?api_key=%s", endPoint, apiKey);
-        return (CompletableFuture<VersionResponse>)getObjectFromResponse(url, client, VersionResponseImpl.class);
+        return (CompletableFuture<VersionResponse>)getObjectFromResponse(url, client, VersionResponseImpl.class, null);
     }
 
     /**
@@ -122,7 +132,7 @@ public class SolarEdgeApiClientImpl implements SolarEdgeApiClient {
     @Override
     public CompletableFuture<SupportedVersionsResponse> getSupportedVersions() {
         String url = String.format("%s/version/supported?api_key=%s", endPoint, apiKey);
-        return (CompletableFuture<SupportedVersionsResponse>)getObjectFromResponse(url, client, SupportedVersionsResponseImpl.class);
+        return (CompletableFuture<SupportedVersionsResponse>)getObjectFromResponse(url, client, SupportedVersionsResponseImpl.class, null);
     }
 
     /**
@@ -159,6 +169,6 @@ public class SolarEdgeApiClientImpl implements SolarEdgeApiClient {
                 startTimeString,
                 endTimeString,
                 apiKey);
-        return (CompletableFuture<DetailedEnergyResponse>)getObjectFromResponse(url, client, DetailedEnergyResponseImpl.class);
+        return (CompletableFuture<DetailedEnergyResponse>)getObjectFromResponse(url, client, DetailedEnergyResponseImpl.class, buildSiteIdListFromSingleValue(siteId));
     }
 }
