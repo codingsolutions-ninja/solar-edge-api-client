@@ -13,4 +13,9 @@ import ninja.codingsolutions.solaredgeapiclient.models.Version;
 @Builder
 public class VersionImpl implements Version {
     private final String release;
+
+    @Override
+    public Object deepCopy() {
+        return new VersionImpl(this.getRelease());
+    }
 }

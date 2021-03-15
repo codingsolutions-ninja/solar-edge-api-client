@@ -8,7 +8,7 @@ import ninja.codingsolutions.solaredgeapiclient.models.impl.VersionImpl;
  * Version information
  */
 @JsonDeserialize(as = VersionImpl.class)
-public interface Version {
+public interface Version extends BaseModel {
     /**
      * Get the version release string
      * @return {String} release version string

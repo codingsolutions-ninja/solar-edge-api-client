@@ -10,7 +10,7 @@ import ninja.codingsolutions.solaredgeapiclient.models.VersionResponse;
 
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 
 /**
  * Interface defining the interactions available for the client
@@ -22,28 +22,28 @@ public interface SolarEdgeApiClient {
      * @param siteId integer id of the site
      * @return future that resolve with the site details associated with the provided site id
      */
-    CompletableFuture<SiteDetailsResponse> getSiteDetails(int siteId);
+    CompletionStage<SiteDetailsResponse> getSiteDetails(int siteId);
 
     /**
      * Fetch a high level summary/overview of the site
      * @param siteId integer id of the site
      * @return future that resolves with the overview response
      */
-    CompletableFuture<OverviewResponse> getOverviewResponse(int siteId);
+    CompletionStage<OverviewResponse> getOverviewResponse(int siteId);
 
 
     /**
      * Get the current version of the API
      * @return response object detailing the current version of the API server
      */
-    CompletableFuture<VersionResponse> getVersion();
+    CompletionStage<VersionResponse> getVersion();
 
 
     /**
      * Get the list of supported versions by the API server
      * @return response object detailing the list of versions that the API server supports
      */
-    CompletableFuture<SupportedVersionsResponse> getSupportedVersions();
+    CompletionStage<SupportedVersionsResponse> getSupportedVersions();
 
 
     /**
@@ -57,7 +57,7 @@ public interface SolarEdgeApiClient {
      * @param endTime the end time of the data window
      * @return a response containing the energy details as specified by the query parameters
      */
-    CompletableFuture<DetailedEnergyResponse> getDetailedEnergyReport(
+    CompletionStage<DetailedEnergyResponse> getDetailedEnergyReport(
             int siteId,
             List<MeterType> meters,
             TimeUnitType timeUnitType,
