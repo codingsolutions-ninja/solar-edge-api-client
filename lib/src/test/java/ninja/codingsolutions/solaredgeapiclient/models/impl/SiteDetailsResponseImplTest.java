@@ -7,7 +7,7 @@ import java.util.List;
 
 public class SiteDetailsResponseImplTest extends BaseModelTest {
     @Override
-    DeepCopyable buildRandomObject() {
+    protected DeepCopyable buildRandomObject() {
         return SiteDetailsResponseImpl.builder().siteIds(List.of(random.nextInt()))
                 .details(DetailsImpl.builder()
                         .accountId(random.nextInt())
@@ -52,7 +52,7 @@ public class SiteDetailsResponseImplTest extends BaseModelTest {
     }
 
     @Override
-    Class<?> getDeserializiableClass() {
+    protected Class<?> getDeserializiableClass() {
         return SiteDetailsResponseImpl.class;
     }
 }

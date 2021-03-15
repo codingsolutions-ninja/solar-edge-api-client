@@ -9,7 +9,7 @@ import java.util.List;
 class VersionResponseImplTests extends BaseModelTest {
 
     @Test
-    void canGetVersion(){
+    public void canGetVersion(){
         VersionResponseImpl impl1 = VersionResponseImpl.builder()
                 .version(VersionImpl.builder().release("TEST_RELEASE").build())
                 .siteIds(List.of(1))
@@ -19,7 +19,7 @@ class VersionResponseImplTests extends BaseModelTest {
     }
 
     @Override
-    DeepCopyable buildRandomObject() {
+    protected DeepCopyable buildRandomObject() {
         return VersionResponseImpl.builder()
                 .version(VersionImpl.builder()
                 .release(Double.toString(random.nextDouble())).build())
@@ -27,7 +27,7 @@ class VersionResponseImplTests extends BaseModelTest {
     }
 
     @Override
-    Class<?> getDeserializiableClass() {
+    protected Class<?> getDeserializiableClass() {
         return VersionResponseImpl.class;
     }
 

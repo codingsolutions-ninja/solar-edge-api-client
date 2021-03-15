@@ -6,7 +6,7 @@ import java.util.List;
 
 public class SupportedVersionsResponseImplTest extends BaseModelTest {
     @Override
-    DeepCopyable buildRandomObject() {
+    protected DeepCopyable buildRandomObject() {
         return SupportedVersionsResponseImpl.builder().supported(List.of(VersionImpl.builder()
                 .release(Integer.toString(random.nextInt()))
                 .build()))
@@ -14,7 +14,7 @@ public class SupportedVersionsResponseImplTest extends BaseModelTest {
     }
 
     @Override
-    Class<?> getDeserializiableClass() {
+    protected Class<?> getDeserializiableClass() {
         return SupportedVersionsResponseImpl.class;
     }
 }

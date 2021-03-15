@@ -11,8 +11,8 @@ import java.util.Random;
 
 public abstract class BaseModelTest {
     protected static Random random = new Random();
-    abstract DeepCopyable buildRandomObject();
-    abstract Class<?> getDeserializiableClass();
+    protected abstract DeepCopyable buildRandomObject();
+    protected abstract Class<?> getDeserializiableClass();
 
     @Test
     public void canSerDer() throws IOException {

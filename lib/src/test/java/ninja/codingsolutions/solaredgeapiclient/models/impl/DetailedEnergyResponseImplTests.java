@@ -10,7 +10,7 @@ import java.util.List;
 
 public class DetailedEnergyResponseImplTests extends BaseModelTest {
     @Override
-    DeepCopyable buildRandomObject() {
+    protected DeepCopyable buildRandomObject() {
         return DetailedEnergyResponseImpl.builder()
                 .siteIds(List.of(random.nextInt()))
                 .energyDetails(EnergyDetailsImpl.builder()
@@ -25,7 +25,7 @@ public class DetailedEnergyResponseImplTests extends BaseModelTest {
     }
 
     @Override
-    Class<?> getDeserializiableClass() {
+    protected Class<?> getDeserializiableClass() {
         return DetailedEnergyResponseImpl.class;
     }
 }
