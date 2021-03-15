@@ -217,10 +217,11 @@ class SolarEdgeApiClientImplTests {
         Assertions.assertFalse(apiResponse.getSiteIds().isPresent());
     }
 
+
     @Test
     void canGetSiteOverview() throws ExecutionException, InterruptedException {
         returnJson(standardOverviewJsonResponse);
-        Future<OverviewResponse> response = client.getOverviewResponse(1111);
+        Future<OverviewResponse> response = client.getOverviewResponse(1111).toCompletableFuture();
         OverviewResponse resp = response.get();
         Assertions.assertNotNull(resp);
         assertSiteInformationIsPresent(resp);
@@ -247,7 +248,7 @@ class SolarEdgeApiClientImplTests {
     @Test
     void canGetSiteDetails() throws ExecutionException, InterruptedException, ParseException {
         returnJson(standardDetailJsonResponse);
-        Future<SiteDetailsResponse> response = client.getSiteDetails(1111);
+        Future<SiteDetailsResponse> response = client.getSiteDetails(1111).toCompletableFuture();
         SiteDetailsResponse resp = response.get();
         Assertions.assertNotNull(resp);
         assertSiteInformationIsPresent(resp);
@@ -300,7 +301,7 @@ class SolarEdgeApiClientImplTests {
     @Test
     void canGetVersion() throws ExecutionException, InterruptedException {
         returnJson(standardVersionJsonResponse);
-        Future<VersionResponse> response = client.getVersion();
+        Future<VersionResponse> response = client.getVersion().toCompletableFuture();
         VersionResponse version = response.get();
         Assertions.assertNotNull(version);
         assertSiteInformationIsNotPresent(version);
@@ -312,7 +313,7 @@ class SolarEdgeApiClientImplTests {
     @Test
     void canGetSupportedVersions() throws ExecutionException, InterruptedException {
         returnJson(standardSupportedVersionsResponse);
-        Future<SupportedVersionsResponse> response = client.getSupportedVersions();
+        Future<SupportedVersionsResponse> response = client.getSupportedVersions().toCompletableFuture();
         SupportedVersionsResponse version = response.get();
         Assertions.assertNotNull(version);
         assertSiteInformationIsNotPresent(version);
@@ -325,7 +326,7 @@ class SolarEdgeApiClientImplTests {
     @SuppressWarnings("unchecked")
     void exceptionsBubble() throws ExecutionException, InterruptedException, ClassNotFoundException {
         throwOnRequest(new IOException("TEST Exception"));
-        CompletableFuture<SupportedVersionsResponse> response = client.getSupportedVersions();
+        CompletableFuture<SupportedVersionsResponse> response = client.getSupportedVersions().toCompletableFuture();
         Class<? extends Exception> cls = (Class<? extends Exception>) Class.forName("java.lang.Exception");
         Assertions.assertThrows(cls, response::get);
         Assertions.assertTrue(response.isCompletedExceptionally());
@@ -340,7 +341,7 @@ class SolarEdgeApiClientImplTests {
                 TimeUnitType.DAY,
                 ZonedDateTime.now().minus(Duration.of(1, ChronoUnit.DAYS)),
                 ZonedDateTime.now()
-            );
+            ).toCompletableFuture();
         DetailedEnergyResponse detailedEnergyResponse = response.get();
         Assertions.assertNotNull(detailedEnergyResponse);
         assertSiteInformationIsPresent(detailedEnergyResponse);

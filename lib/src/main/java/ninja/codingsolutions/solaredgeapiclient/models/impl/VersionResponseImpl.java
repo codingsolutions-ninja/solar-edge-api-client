@@ -1,8 +1,8 @@
 package ninja.codingsolutions.solaredgeapiclient.models.impl;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
 import ninja.codingsolutions.solaredgeapiclient.models.Version;
 import ninja.codingsolutions.solaredgeapiclient.models.VersionResponse;
@@ -12,8 +12,15 @@ import ninja.codingsolutions.solaredgeapiclient.models.VersionResponse;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Builder
 @Jacksonized
+@SuperBuilder
 public class VersionResponseImpl extends ApiResponseImpl implements VersionResponse {
-    private final Version version;
+    private Version version;
+
+    @Override
+    public Object deepCopy() {
+        return super.deepCopy(builder()
+                .version(VersionImpl.builder().release(this.getVersion().getRelease()).build())
+                .build());
+    }
 }
