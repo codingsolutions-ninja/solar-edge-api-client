@@ -23,7 +23,9 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
     - name: Publish to Sonatype OSS
-      run: ./gradlew uploadArchives
+      run: |
+        ./gradlew uploadArchives
+        git status
       env:
         OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
         OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
