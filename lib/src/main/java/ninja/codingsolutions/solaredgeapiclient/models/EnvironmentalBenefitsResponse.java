@@ -1,5 +1,6 @@
 package ninja.codingsolutions.solaredgeapiclient.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import ninja.codingsolutions.solaredgeapiclient.models.impl.EnvironmentalBenefitsResponseImpl;
 
@@ -12,5 +13,6 @@ public interface EnvironmentalBenefitsResponse extends ApiResponse {
      * Get an estimate of site revenue
      * @return {double} site revenue
      */
-    EnvironmentalBenefits getEnvironmentalBenefits();
+    @JsonProperty("envBenefits")
+    EnvironmentalBenefits getEnvBenefits();
 }

@@ -1,5 +1,6 @@
 package ninja.codingsolutions.solaredgeapiclient.models.impl;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import ninja.codingsolutions.solaredgeapiclient.interfaces.DeepCopyable;
@@ -18,7 +19,6 @@ public abstract class BaseModelTest {
     public void canSerDer() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new Jdk8Module());
-
         Object obj = this.buildRandomObject();
         String jsonStr = mapper.writeValueAsString(obj);
         Object deserializedObject = mapper.readValue(jsonStr, this.getDeserializiableClass());

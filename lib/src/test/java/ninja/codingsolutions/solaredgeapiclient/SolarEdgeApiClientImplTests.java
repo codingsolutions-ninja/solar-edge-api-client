@@ -4,6 +4,8 @@ import ninja.codingsolutions.solaredgeapiclient.interfaces.SolarEdgeApiClient;
 import ninja.codingsolutions.solaredgeapiclient.models.ApiResponse;
 import ninja.codingsolutions.solaredgeapiclient.models.DetailedEnergyResponse;
 import ninja.codingsolutions.solaredgeapiclient.models.DetailedMeterEnergy;
+import ninja.codingsolutions.solaredgeapiclient.models.EnvironmentalBenefits;
+import ninja.codingsolutions.solaredgeapiclient.models.EnvironmentalBenefitsResponse;
 import ninja.codingsolutions.solaredgeapiclient.models.MeterType;
 import ninja.codingsolutions.solaredgeapiclient.models.OverviewResponse;
 import ninja.codingsolutions.solaredgeapiclient.models.PowerUnitType;
@@ -371,5 +373,22 @@ class SolarEdgeApiClientImplTests {
                 Assertions.assertTrue(energyValue.getDate().after(new Date(0)));
             }
         }
+    }
+
+    @Test
+    void canGetEnvironmentalImpacts() throws ExecutionException, InterruptedException {
+        returnJson(environmentalBenefitsResponse);
+        Future<EnvironmentalBenefitsResponse> response = client.getEnvironmentalBenefits(1111).toCompletableFuture();
+        EnvironmentalBenefitsResponse envResponse = response.get();
+        EnvironmentalBenefits benefits = envResponse.getEnvBenefits();
+        Assertions.assertNotNull(benefits);
+        Assertions.assertEquals(262.22236560000005, benefits.getTreesPlanted());
+        Assertions.assertEquals(67915.664, benefits.getLightBulbs());
+        EnvironmentalBenefits.GasEmissionsSaved savedEmissions = benefits.getGasEmissionSaved();
+        Assertions.assertNotNull(benefits.getGasEmissionSaved());
+        Assertions.assertEquals(34704.3, savedEmissions.getCo2());
+        Assertions.assertEquals(25077.93, savedEmissions.getSo2());
+        Assertions.assertEquals(7997.29, savedEmissions.getNox());
+        Assertions.assertEquals(EnvironmentalBenefits.EmissionUnitType.LB, savedEmissions.getUnits());
     }
 }
