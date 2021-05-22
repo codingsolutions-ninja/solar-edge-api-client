@@ -10,17 +10,19 @@ SolarEdgeClientFactory factory = SolarEdgeClientFactory
     .builder()
     .apiKey("YOUR_API_KEY")
     .apiUrl("https://monitoringapi.solaredge.com")
+    .httpClient(HttpClient.newHttpClient())
     .build();
 
 SolarEdgeApiClient client = factory.buildClient();
 
-CompletableFuture<OverviewResponse> future = client.getOverviewResponse(YOUR_SITE_NUMBER);
+CompletableFuture<OverviewResponse> future = client.getOverviewResponse(YOUR_SITE_NUMBER)
+    .toCompletableFuture();
 
-future.thenApplyAsync(resp ->{
-    System.out.println(String.format("Your solar panels are generating %s w/h of power", resp.getOverview()
-        .getCurrentPower()
-        .getPower();))
+future.thenAcceptAsync(resp -> {
+    System.out.println(String.format("Your solar panels are generating %s w/h of power",
+        resp.getOverview().getCurrentPower().getPower()));
 });
+future.join();
 ```
 
 ### Command Support Table
