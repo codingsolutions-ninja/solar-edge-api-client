@@ -35,5 +35,6 @@ future.join();
 | Detailed Energy Query | :heavy_check_mark: | :x: 
 | Get Site List | :x: | N/A
 | Get Power Flow | :x: | :x:
+| Get Environmental Impact | :heavy_check_mark: | :x:
 
 
