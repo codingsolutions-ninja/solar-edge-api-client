@@ -1,6 +1,5 @@
 package ninja.codingsolutions.solaredgeapiclient.models.impl;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import ninja.codingsolutions.solaredgeapiclient.interfaces.DeepCopyable;

@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import ninja.codingsolutions.solaredgeapiclient.interfaces.SolarEdgeApiClient;
 import ninja.codingsolutions.solaredgeapiclient.models.ApiResponse;
 import ninja.codingsolutions.solaredgeapiclient.models.DetailedEnergyResponse;
-import ninja.codingsolutions.solaredgeapiclient.models.EnvironmentalBenefits;
 import ninja.codingsolutions.solaredgeapiclient.models.EnvironmentalBenefitsResponse;
 import ninja.codingsolutions.solaredgeapiclient.models.MeterType;
 import ninja.codingsolutions.solaredgeapiclient.models.OverviewResponse;
