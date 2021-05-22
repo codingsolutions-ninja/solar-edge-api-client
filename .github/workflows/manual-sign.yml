@@ -22,9 +22,9 @@ jobs:
         server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
         settings-path: ${{ github.workspace }} # location for the settings.xml file
     - name: Build with Gradle
-      run: gradle build
+      run: ./gradlew build
     - name: Sign Archives
-      run: gradle sign
+      run: ./gradlew sign
       env:
         OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
         OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
