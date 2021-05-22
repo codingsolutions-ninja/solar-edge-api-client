@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import ninja.codingsolutions.solaredgeapiclient.interfaces.SolarEdgeApiClient;
 import ninja.codingsolutions.solaredgeapiclient.models.ApiResponse;
 import ninja.codingsolutions.solaredgeapiclient.models.DetailedEnergyResponse;
+import ninja.codingsolutions.solaredgeapiclient.models.EnvironmentalBenefitsResponse;
 import ninja.codingsolutions.solaredgeapiclient.models.MeterType;
 import ninja.codingsolutions.solaredgeapiclient.models.OverviewResponse;
 import ninja.codingsolutions.solaredgeapiclient.models.SiteDetailsResponse;
@@ -12,6 +13,7 @@ import ninja.codingsolutions.solaredgeapiclient.models.SupportedVersionsResponse
 import ninja.codingsolutions.solaredgeapiclient.models.TimeUnitType;
 import ninja.codingsolutions.solaredgeapiclient.models.VersionResponse;
 import ninja.codingsolutions.solaredgeapiclient.models.impl.DetailedEnergyResponseImpl;
+import ninja.codingsolutions.solaredgeapiclient.models.impl.EnvironmentalBenefitsResponseImpl;
 import ninja.codingsolutions.solaredgeapiclient.models.impl.OverviewResponseImpl;
 import ninja.codingsolutions.solaredgeapiclient.models.impl.SiteDetailsResponseImpl;
 import ninja.codingsolutions.solaredgeapiclient.models.impl.SupportedVersionsResponseImpl;
@@ -29,6 +31,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 import java.util.stream.Collectors;
 
 /**
@@ -133,6 +136,21 @@ public class SolarEdgeApiClientImpl implements SolarEdgeApiClient {
     public CompletableFuture<SupportedVersionsResponse> getSupportedVersions() {
         String url = String.format("%s/version/supported?api_key=%s", endPoint, apiKey);
         return (CompletableFuture<SupportedVersionsResponse>)getObjectFromResponse(url, client, SupportedVersionsResponseImpl.class, null);
+    }
+
+    /**
+     * Fetches the estimated environmental benefits impact information associated with
+     * the targeted site id
+     *
+     * @param siteId targeted site id
+     * @return response object containing the estimated environmental impacts
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public CompletionStage<EnvironmentalBenefitsResponse> getEnvironmentalBenefits(int siteId) {
+        String url = String.format("%s/site/%s/envBenefits?systemUnits=Imperial&api_key=%s", endPoint, siteId, apiKey);
+        return (CompletableFuture<EnvironmentalBenefitsResponse>)getObjectFromResponse(url,
+                client, EnvironmentalBenefitsResponseImpl.class, buildSiteIdListFromSingleValue(siteId));
     }
 
     /**

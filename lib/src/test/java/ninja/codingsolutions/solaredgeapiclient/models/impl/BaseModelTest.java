@@ -18,7 +18,6 @@ public abstract class BaseModelTest {
     public void canSerDer() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new Jdk8Module());
-
         Object obj = this.buildRandomObject();
         String jsonStr = mapper.writeValueAsString(obj);
         Object deserializedObject = mapper.readValue(jsonStr, this.getDeserializiableClass());
