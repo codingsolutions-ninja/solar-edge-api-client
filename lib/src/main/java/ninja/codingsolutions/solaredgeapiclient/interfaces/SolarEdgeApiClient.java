@@ -1,6 +1,7 @@
 package ninja.codingsolutions.solaredgeapiclient.interfaces;
 
 import ninja.codingsolutions.solaredgeapiclient.models.DetailedEnergyResponse;
+import ninja.codingsolutions.solaredgeapiclient.models.EnvironmentalBenefitsResponse;
 import ninja.codingsolutions.solaredgeapiclient.models.MeterType;
 import ninja.codingsolutions.solaredgeapiclient.models.OverviewResponse;
 import ninja.codingsolutions.solaredgeapiclient.models.SiteDetailsResponse;
@@ -45,6 +46,13 @@ public interface SolarEdgeApiClient {
      */
     CompletionStage<SupportedVersionsResponse> getSupportedVersions();
 
+    /**
+     * Fetches the estimated environmental benefits impact information associated with
+     * the targeted site id
+     * @param siteId targeted site id
+     * @return response object containing the estimated environmental impacts
+     */
+    CompletionStage<EnvironmentalBenefitsResponse> getEnvironmentalBenefits(int siteId);
 
     /**
      * Fetches a detailed energy report as recorded by the specified meter types, at the targeted

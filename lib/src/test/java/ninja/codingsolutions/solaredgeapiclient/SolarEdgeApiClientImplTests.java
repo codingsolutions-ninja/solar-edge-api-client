@@ -180,6 +180,19 @@ class SolarEdgeApiClientImplTests {
             "    }\n" +
             "}";
 
+    private static final String environmentalBenefitsResponse = "{\n" +
+            "    \"envBenefits\": {\n" +
+            "        \"gasEmissionSaved\": {\n" +
+            "            \"units\": \"lb\",\n" +
+            "            \"co2\": 34704.3,\n" +
+            "            \"so2\": 25077.93,\n" +
+            "            \"nox\": 7997.29\n" +
+            "        },\n" +
+            "        \"treesPlanted\": 262.22236560000005,\n" +
+            "        \"lightBulbs\": 67915.664\n" +
+            "    }\n" +
+            "}";
+
     private HttpResponse<Object> mockResponse;
     private HttpClient mockClient;
     private SolarEdgeApiClient client;

@@ -19,7 +19,10 @@ plugins {
 group = "ninja.codingsolutions"
 archivesBaseName = "solar-edge-api-client"
 version gitVersion()
-
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
 ext {
     repoPath = System.getenv('GH_REPO_PATH')
     ghToken = System.getenv('GH_TOKEN')
