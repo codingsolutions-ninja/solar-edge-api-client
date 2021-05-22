@@ -10,7 +10,7 @@ plugins {
     // Apply the java-library plugin for API and implementation separation.
     id 'java-library'
     id 'jacoco'
-    id 'maven'
+    id 'maven-publish'
     id 'signing'
     id 'com.palantir.git-version' version '0.12.3'
 
@@ -22,6 +22,8 @@ version gitVersion()
 java {
     sourceCompatibility = JavaVersion.VERSION_11
     targetCompatibility = JavaVersion.VERSION_11
+    withJavadocJar()
+    withSourcesJar()
 }
 ext {
     repoPath = System.getenv('GH_REPO_PATH')
@@ -54,15 +56,6 @@ dependencies {
 
 }
 
-task javadocJar(type: Jar) {
-    classifier = 'javadoc'
-    from javadoc
-}
-
-task sourcesJar(type: Jar) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
 tasks.named('test') {
     // Use junit platform for unit tests.
     useJUnitPlatform()
@@ -80,18 +73,6 @@ jacocoTestReport {
 }
 artifacts {
     archives javadocJar, sourcesJar
-}
-
-
-
-signing {
-    def signingKey = findProperty("signingKey")
-    def signingPassword = findProperty("signingPassword")
-    if(signingKey == null || signingPassword == null)
-        return
-    project.logger.lifecycle('Signing Archives')
-    useInMemoryPgpKeys(signingKey, signingPassword)
-    sign configurations.archives
 }
 
 def getEnvironmentVarIfDef(varName, defValue) {
@@ -112,49 +93,45 @@ if (!project.hasProperty("ossrhPassword")) {
   ext.ossrhPassword = getEnvironmentVarIfDef("OSSRH_PASSWORD", "OSSRH-PASSWORD-SHOULD-BE-DEFINED-EXTERNALLY")
 }
 
-
-//maven central
-uploadArchives {
-  repositories {
-    mavenDeployer {
-      beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
-      repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-        authentication(userName: ossrhUsername, password: ossrhPassword)
-      }
-
-      snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-        authentication(userName: ossrhUsername, password: ossrhPassword)
-      }
-
-      pom.project {
-        name projectName
-        packaging 'jar'
-        // optionally artifactId can be defined here 
-        description 'A simple API that abstracts fetching data from the solar edge api and getting back a POJO'
-        url projectUrl
-
-        scm {
-          connection 'scm:git:' + scmUrl
-          developerConnection 'scm:git:' + scmUrl
-          url scmUrl
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            pom {
+                name = projectName
+                artifactId = 'solar-edge-api-client'
+                description = 'A simple API that abstracts fetching data from the solar edge api and getting back a POJO'
+                url = projectUrl
+                licenses {
+                    license {
+                        name = 'The MIT License (MIT)'
+                        url = 'https://mit-license.org/'
+                    }
+                }
+                developers {
+                    developer {
+                        id = authorId
+                        name = authorName
+                        email = authorEmail
+                    }
+                }
+                scm {
+                    connection = 'scm:git:' + scmUrl
+                    developerConnection = 'scm:git:' + scmUrl
+                    url = scmUrl
+                }
+            }
         }
-
-        licenses {
-          license {
-            name 'The MIT License (MIT)'
-            url 'https://mit-license.org/'
-          }
-        }
-
-        developers {
-          developer {
-            id authorId
-            name authorName
-            email authorEmail
-          }
-        }
-      }
     }
-  }
 }
+signing {
+    def signingKey = findProperty("signingKey")
+    def signingPassword = findProperty("signingPassword")
+    if(signingKey == null || signingPassword == null)
+        return
+    project.logger.lifecycle('Signing Archives')
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign publishing.publications.mavenJava
+}
+
+
