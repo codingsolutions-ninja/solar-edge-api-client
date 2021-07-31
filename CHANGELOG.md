@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0]
+### Dependency Updates
+- jackson 2.12.4
+- mockito 3.11.2
+- junit 5.7.2
+- lombok 1.18.16
+
+
 ## [0.2.0]
 ### Added
 - Support for estimated environmental impact api request
