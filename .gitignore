@@ -21,3 +21,4 @@ build
 
 # Ignore github java setup settings.xml file
 settings.xml
+.dccache
