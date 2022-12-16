@@ -23,6 +23,8 @@ jobs:
         distribution: temurin
     - name: Build with Gradle
       run: ./gradlew build
+    - name: Print git status
+      run: git status
     - name: Publish to Sonatype OSS
       run: ./gradlew uploadArchives
       env:
