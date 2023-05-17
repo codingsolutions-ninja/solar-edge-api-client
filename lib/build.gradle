@@ -42,14 +42,14 @@ repositories {
 dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.26'
     annotationProcessor 'org.projectlombok:lombok:1.18.26'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.1'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.15.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.3'
     testCompile "org.mockito:mockito-core:5.3.1"
     testCompileOnly 'org.projectlombok:lombok:1.18.26'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.3'
-    testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.15.0'
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.15.1'
     testImplementation 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.15.0'
 
 }
