@@ -44,11 +44,11 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.28'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.15.2'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.3'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
     testCompile "org.mockito:mockito-core:5.4.0"
     testCompileOnly 'org.projectlombok:lombok:1.18.28'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.28'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.3'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
     testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
     testImplementation 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.15.2'
 
